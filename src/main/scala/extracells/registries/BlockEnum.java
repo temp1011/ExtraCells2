@@ -12,7 +12,6 @@ import extracells.block.BlockFluidFiller;
 import extracells.block.BlockFluidInterface;
 import extracells.block.BlockHardMEDrive;
 import extracells.block.BlockVibrationChamberFluid;
-import extracells.block.BlockWalrus;
 import extracells.integration.Integration;
 import extracells.item.block.ItemBlockCertusTank;
 import extracells.item.block.ItemBlockFluidFiller;
@@ -21,7 +20,6 @@ import extracells.util.CreativeTabEC;
 
 public enum BlockEnum {
 	CERTUSTANK("certustank", new BlockCertusTank(), (block) -> new ItemBlockCertusTank(block)),
-	WALRUS("walrus", new BlockWalrus()),
 	FLUIDCRAFTER("fluidcrafter", new BlockFluidCrafter()),
 	ECBASEBLOCK("ecbaseblock", BlockFluidInterface.instance(), (block) -> new ItemBlockFluidInterface(block)),
 	FILLER("fluidfiller", BlockFluidFiller.instance(), (block) -> new ItemBlockFluidFiller(block)),

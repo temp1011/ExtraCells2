@@ -7,7 +7,6 @@ import extracells.tileentity.TileEntityCertusTank;
 import extracells.tileentity.TileEntityFluidCrafter;
 import extracells.tileentity.TileEntityFluidFiller;
 import extracells.tileentity.TileEntityFluidInterface;
-import extracells.tileentity.TileEntityWalrus;
 
 public class BlockDefinition implements IBlockDefinition {
 
@@ -35,12 +34,6 @@ public class BlockDefinition implements IBlockDefinition {
 	public ITileDefinition fluidFiller() {
 		return new BlockItemDefinitions(BlockEnum.FLUIDCRAFTER.getBlock(), 1,
 			TileEntityFluidFiller.class);
-	}
-
-	@Override
-	public ITileDefinition walrus() {
-		return new BlockItemDefinitions(BlockEnum.WALRUS.getBlock(),
-			TileEntityWalrus.class);
 	}
 
 }

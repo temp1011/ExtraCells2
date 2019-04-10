@@ -23,14 +23,12 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void registerRenderers() {
-		//ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWalrus.class, new TileEntityRendererWalrus());
 		ModelManager.registerItemAndBlockColors();
 	}
 
 	@SubscribeEvent
 	public void onBakeModels(ModelBakeEvent event) {
 		ModelCertusTank.onBakeModels(event);
-		//ModelWalrus.onBakeModels(event);
 		ModelManager.onBakeModels(event);
 	}
 

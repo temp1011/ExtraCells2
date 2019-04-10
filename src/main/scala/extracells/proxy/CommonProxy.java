@@ -35,11 +35,8 @@ import extracells.tileentity.TileEntityFluidFiller;
 import extracells.tileentity.TileEntityFluidInterface;
 import extracells.tileentity.TileEntityHardMeDrive;
 import extracells.tileentity.TileEntityVibrationChamberFluid;
-import extracells.tileentity.TileEntityWalrus;
 import extracells.util.FuelBurnTime;
 import extracells.util.recipe.RecipeUniversalTerminal;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.registries.IForgeRegistry;
 
 public class CommonProxy {
 
@@ -109,7 +106,6 @@ public class CommonProxy {
 		IAppEngApi api = AEApi.instance();
 		IMovableRegistry movable = api.registries().movable();
 		movable.whiteListTileEntity(TileEntityCertusTank.class);
-		movable.whiteListTileEntity(TileEntityWalrus.class);
 		movable.whiteListTileEntity(TileEntityFluidCrafter.class);
 		movable.whiteListTileEntity(TileEntityFluidInterface.class);
 		movable.whiteListTileEntity(TileEntityFluidFiller.class);
@@ -127,7 +123,6 @@ public class CommonProxy {
 
 	public void registerTileEntities() {
 		GameRegistry.registerTileEntity(TileEntityCertusTank.class, "tileEntityCertusTank");
-		GameRegistry.registerTileEntity(TileEntityWalrus.class, "tileEntityWalrus");
 		GameRegistry.registerTileEntity(TileEntityFluidCrafter.class, "tileEntityFluidCrafter");
 		GameRegistry.registerTileEntity(TileEntityFluidInterface.class, "tileEntityFluidInterface");
 		GameRegistry.registerTileEntity(TileEntityFluidFiller.class, "tileEntityFluidFiller");
