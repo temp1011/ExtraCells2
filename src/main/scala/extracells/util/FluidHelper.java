@@ -25,7 +25,7 @@ public class FluidHelper {
 		FluidStack drained = fluidHandler.drain(fluid, true);
 		if(fluidHandler instanceof FluidBucketWrapper)
 			itemStack = ((FluidBucketWrapper)fluidHandler).getContainer();
-		return new MutablePair(drained != null && drained.getFluid() == fluid.getFluid() ? drained.amount : 0, itemStack);
+		return MutablePair.of(drained != null && drained.getFluid() == fluid.getFluid() ? drained.amount : 0, itemStack);
 	}
 
 	public static Pair<Integer, ItemStack> fillStack(ItemStack itemStack, FluidStack fluid) {
@@ -39,7 +39,7 @@ public class FluidHelper {
 		int filled = fluidHandler.fill(fluid, true);
 		if(fluidHandler instanceof FluidBucketWrapper)
 			itemStack = ((FluidBucketWrapper)fluidHandler).getContainer();
-		return new MutablePair(filled, itemStack);
+		return MutablePair.of(filled, itemStack);
 	}
 
 	public static int getCapacity(ItemStack itemStack) {
@@ -89,7 +89,6 @@ public class FluidHelper {
 			if (properties.getCapacity() > 0) {
 				FluidStack contents = properties.getContents();
 				if (contents == null) {
-					continue;
 				} else if (contents.amount > 0) {
 					return true;
 				}
@@ -131,7 +130,6 @@ public class FluidHelper {
 			if (properties.canFill() && properties.getCapacity() > 0) {
 				FluidStack contents = properties.getContents();
 				if (contents == null) {
-					continue;
 				} else if (contents.amount > 0) {
 					return false;
 				}

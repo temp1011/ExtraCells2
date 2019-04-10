@@ -26,7 +26,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
-import appeng.api.AEApi;
 import appeng.api.config.RedstoneMode;
 import appeng.api.config.SecurityPermissions;
 import appeng.api.networking.IGridNode;
@@ -139,9 +138,9 @@ public class PartFluidLevelEmitter extends PartECBase implements IStackWatcherHo
 
 	@Override
 	public void onStackChange(IItemList o, IAEStack fullStack, IAEStack diffStack, IActionSource src, IStorageChannel chan) {
-		if (isGas && chan == StorageChannels.GAS())
-			onStackChangeGas((IAEGasStack) fullStack, (IAEGasStack) diffStack);
-		else if (chan == StorageChannels.FLUID() && diffStack != null && ((IAEFluidStack) diffStack).getFluid() == this.selectedFluid) {
+		if (isGas && chan == StorageChannels.GAS()) {
+
+		} else if (chan == StorageChannels.FLUID() && diffStack != null && ((IAEFluidStack) diffStack).getFluid() == this.selectedFluid) {
 			this.currentAmount = fullStack != null ? fullStack.getStackSize() : 0;
 
 			IGridNode node = getGridNode();
@@ -151,10 +150,6 @@ public class PartFluidLevelEmitter extends PartECBase implements IStackWatcherHo
 				notifyTargetBlock(getHostTile(), getFacing());
 			}
 		}
-	}
-
-	protected void onStackChangeGas(IAEGasStack fullStack, IAEGasStack diffStack){
-
 	}
 
 	@Override

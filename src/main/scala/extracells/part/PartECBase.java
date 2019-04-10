@@ -306,7 +306,7 @@ public abstract class PartECBase implements IPart, IGridHost, IActionHost, IPowe
 
 	@Override
 	public boolean onActivate(EntityPlayer player, EnumHand enumHand, Vec3d pos) {
-		if (player != null && player instanceof EntityPlayerMP) {
+		if (player instanceof EntityPlayerMP) {
 			BlockPos hostPos = hostTile.getPos();
 			GuiHandler.launchGui(GuiHandler.getGuiId(this), player, this.hostTile.getWorld(), hostPos.getX(), hostPos.getY(), hostPos.getZ());
 		}

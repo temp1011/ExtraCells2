@@ -38,13 +38,13 @@ public class DriverGasImportBus extends DriverBase<PartGasImport> {
 
 	private static PartGasImport getImportBus(World world, BlockPos pos, AEPartLocation dir){
 		TileEntity tile = world.getTileEntity(pos);
-		if (tile == null || (!(tile instanceof IPartHost)))
+		if ((!(tile instanceof IPartHost)))
 			return null;
 		IPartHost host = (IPartHost) tile;
 		if(dir == null || dir == AEPartLocation.INTERNAL){
 			for (AEPartLocation side: AEPartLocation.SIDE_LOCATIONS){
 				IPart part = host.getPart(side);
-				if (part != null && part instanceof PartGasImport)
+				if (part instanceof PartGasImport)
 					return (PartGasImport) part;
 			}
 			return null;

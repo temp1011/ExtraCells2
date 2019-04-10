@@ -11,7 +11,7 @@ import extracells.models.ModelManager
 
 object ItemOCUpgrade extends ItemECBase with UpgradeItemAEBase{
 
-  def THIS = this
+  def THIS: ItemOCUpgrade.type = this
 
   setHasSubtypes(true)
 

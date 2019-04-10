@@ -10,7 +10,7 @@ object Jei {
 
   val fluidBlacklist = new ListBuffer[FluidStack]
 
-  var registry: IModRegistry = null;
+  var registry: IModRegistry = _
 
   def addFluidToBlacklist(stack : FluidStack): Unit ={
     if (registry != null){

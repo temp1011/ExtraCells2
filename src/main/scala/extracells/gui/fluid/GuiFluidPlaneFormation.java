@@ -25,8 +25,6 @@ import extracells.util.NetworkUtil;
 public class GuiFluidPlaneFormation extends GuiBase<ContainerPlaneFormation> implements
 	IFluidSlotGui, IFluidSlotGuiTransfer {
 
-	private PartFluidPlaneFormation part;
-	private EntityPlayer player;
 	private WidgetFluidSlot fluidSlot;
 	private boolean hasNetworkTool;
 
@@ -34,10 +32,8 @@ public class GuiFluidPlaneFormation extends GuiBase<ContainerPlaneFormation> imp
 		EntityPlayer _player) {
 		super(new ResourceLocation("extracells", "textures/gui/paneformation.png"), new ContainerPlaneFormation(_part, _player));
 		((ContainerPlaneFormation) this.inventorySlots).setGui(this);
-		this.part = _part;
-		this.player = _player;
-		widgetManager.add(fluidSlot = new WidgetFluidSlot(widgetManager, this.part, 0, 79, 39));
-		NetworkUtil.sendToPlayer(new PacketPartConfig(part, PacketPartConfig.FLUID_PLANE_FORMATION_INFO), player);
+		widgetManager.add(fluidSlot = new WidgetFluidSlot(widgetManager, _part, 0, 79, 39));
+		NetworkUtil.sendToPlayer(new PacketPartConfig(_part, PacketPartConfig.FLUID_PLANE_FORMATION_INFO), _player);
 		this.hasNetworkTool = this.inventorySlots.getInventory().size() > 40;
 		this.xSize = this.hasNetworkTool ? 246 : 211;
 		this.ySize = 184;

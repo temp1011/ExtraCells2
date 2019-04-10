@@ -4,7 +4,6 @@ import extracells.util.StorageChannels;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import appeng.api.AEApi;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
 import appeng.api.storage.data.IAEItemStack;
 import extracells.registries.ItemEnum;
@@ -49,9 +48,7 @@ public class CraftingPattern2 extends CraftingPattern {
 		IAEItemStack[] s = super.getCondensedOutputs();
 		if (this.needExtra) {
 			IAEItemStack[] s2 = new IAEItemStack[s.length + 1];
-			for (int i = 0; i < s.length; i++) {
-				s2[i] = s[i];
-			}
+			System.arraycopy(s, 0, s2, 0, s.length);
 			s2[s.length] = StorageChannels.ITEM().createStack(new ItemStack(ItemEnum.FLUIDPATTERN.getItem()));
 			return s2;
 		}
@@ -96,9 +93,7 @@ public class CraftingPattern2 extends CraftingPattern {
 				}
 			}
 			IAEItemStack[] s2 = new IAEItemStack[out.length + 1];
-			for (int i = 0; i < out.length; i++) {
-				s2[i] = out[i];
-			}
+			System.arraycopy(out, 0, s2, 0, out.length);
 			s2[out.length] = StorageChannels.ITEM().createStack(
 					new ItemStack(ItemEnum.FLUIDPATTERN.getItem()));
 			return s2;

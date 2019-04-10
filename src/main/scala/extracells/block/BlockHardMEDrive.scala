@@ -55,7 +55,7 @@ object BlockHardMEDrive extends BlockEC(net.minecraft.block.material.Material.RO
       case _ => return null
     }
   }*/
-  var _FACING: PropertyDirection = null
+  var _FACING: PropertyDirection = _
 
   def FACING: PropertyDirection = {
     if (_FACING == null)
@@ -64,9 +64,9 @@ object BlockHardMEDrive extends BlockEC(net.minecraft.block.material.Material.RO
   }
 
   //Only needed because BlockEnum is in java. not in scala
-  val instance = this
+  val instance: BlockHardMEDrive.type = this
 
-  setUnlocalizedName("block.hardmedrive");
+  setUnlocalizedName("block.hardmedrive")
 
   override def createNewTileEntity(world: World, meta: Int): TileEntity = new TileEntityHardMeDrive()
 
@@ -78,10 +78,10 @@ object BlockHardMEDrive extends BlockEC(net.minecraft.block.material.Material.RO
     val z = pos.getZ
     val rand = new Random
     val tileEntity = world.getTileEntity(pos)
-    if (!(tileEntity.isInstanceOf[TileEntityHardMeDrive])) {
+    if (!tileEntity.isInstanceOf[TileEntityHardMeDrive]) {
       return
     }
-    val inventory = (tileEntity.asInstanceOf[TileEntityHardMeDrive]).getInventory
+    val inventory = tileEntity.asInstanceOf[TileEntityHardMeDrive].getInventory
 
     var i = 0
     while (i < inventory.getSizeInventory) {
@@ -93,7 +93,7 @@ object BlockHardMEDrive extends BlockEC(net.minecraft.block.material.Material.RO
         val rz = rand.nextFloat * 0.8F + 0.1F
         val entityItem = new EntityItem(world, x + rx, y + ry, z + rz, item.copy)
         if (item.hasTagCompound) {
-          entityItem.getItem.setTagCompound(item.getTagCompound.copy.asInstanceOf[NBTTagCompound])
+          entityItem.getItem.setTagCompound(item.getTagCompound.copy)
         }
         val factor = 0.05F
         entityItem.motionX = rand.nextGaussian * factor
@@ -110,7 +110,10 @@ object BlockHardMEDrive extends BlockEC(net.minecraft.block.material.Material.RO
   override def onBlockActivated(world: World, pos: BlockPos, state: IBlockState, player: EntityPlayer, hand: EnumHand, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean = {
     if (world.isRemote) return true
     val tile: TileEntity = world.getTileEntity(pos)
-    if (tile.isInstanceOf[TileEntityHardMeDrive]) if (!PermissionUtil.hasPermission(player, SecurityPermissions.BUILD, (tile.asInstanceOf[TileEntityHardMeDrive]).getGridNode(AEPartLocation.INTERNAL))) return false
+    tile match {
+      case drive: TileEntityHardMeDrive => if (!PermissionUtil.hasPermission(player, SecurityPermissions.BUILD, drive.getGridNode(AEPartLocation.INTERNAL))) return false
+      case _ =>
+    }
     val current: ItemStack = player.inventory.getCurrentItem
     if (player.isSneaking) {
       val rayTraceResult = new RayTraceResult(new Vec3d(hitX, hitY, hitZ), side, pos)
@@ -128,7 +131,6 @@ object BlockHardMEDrive extends BlockEC(net.minecraft.block.material.Material.RO
 
   override def onBlockPlacedBy(world: World, pos: BlockPos, state: IBlockState, entity: EntityLivingBase, stack: ItemStack) {
     super.onBlockPlacedBy(world, pos, state, entity, stack)
-    val l = MathHelper.floor(entity.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 
     world.setBlockState(pos, state.withProperty(FACING, entity.getHorizontalFacing.getOpposite), 2)
 
@@ -179,13 +181,15 @@ object BlockHardMEDrive extends BlockEC(net.minecraft.block.material.Material.RO
     if (world.isRemote) return
     val tile: TileEntity = world.getTileEntity(pos)
     if (tile != null) {
-      if (tile.isInstanceOf[TileEntityHardMeDrive]) {
-        val node: IGridNode = (tile.asInstanceOf[TileEntityHardMeDrive]).getGridNode(AEPartLocation.INTERNAL)
-        if (entity != null && entity.isInstanceOf[EntityPlayer]) {
-          val player: EntityPlayer = entity.asInstanceOf[EntityPlayer]
-          node.setPlayerID(AEApi.instance.registries.players.getID(player))
-        }
-        node.updateState
+      tile match {
+        case drive: TileEntityHardMeDrive =>
+          val node: IGridNode = drive.getGridNode(AEPartLocation.INTERNAL)
+          if (entity != null && entity.isInstanceOf[EntityPlayer]) {
+            val player: EntityPlayer = entity.asInstanceOf[EntityPlayer]
+            node.setPlayerID(AEApi.instance.registries.players.getID(player))
+          }
+          node.updateState
+        case _ =>
       }
     }
   }
@@ -198,11 +202,13 @@ object BlockHardMEDrive extends BlockEC(net.minecraft.block.material.Material.RO
     dropItems(world, pos)
     val tile: TileEntity = world.getTileEntity(pos)
     if (tile != null) {
-      if (tile.isInstanceOf[TileEntityHardMeDrive]) {
-        val node: IGridNode = (tile.asInstanceOf[TileEntityHardMeDrive]).getGridNode(AEPartLocation.INTERNAL)
-        if (node != null) {
-          node.destroy
-        }
+      tile match {
+        case drive: TileEntityHardMeDrive =>
+          val node: IGridNode = drive.getGridNode(AEPartLocation.INTERNAL)
+          if (node != null) {
+            node.destroy
+          }
+        case _ =>
       }
     }
 

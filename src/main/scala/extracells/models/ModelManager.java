@@ -52,7 +52,6 @@ public class ModelManager {
 	private static final Map<String, IModel> customModels = new HashMap<>();
 	/* ITEM AND BLOCK REGISTERS*/
 	private static final List<IItemModelRegister> itemModelRegisters = new ArrayList<>();
-	private static final List<IStateMapperRegister> stateMapperRegisters = new ArrayList<>();
 	private static final List<IColoredBlock> blockColorList = new ArrayList<>();
 	private static final List<IColoredItem> itemColorList = new ArrayList<>();
 	/* DEFAULT ITEM AND BLOCK MODEL STATES*/
@@ -102,9 +101,6 @@ public class ModelManager {
 		if (block instanceof IItemModelRegister) {
 			itemModelRegisters.add((IItemModelRegister) block);
 		}
-		if (block instanceof IStateMapperRegister) {
-			stateMapperRegisters.add((IStateMapperRegister) block);
-		}
 		if (block instanceof IColoredBlock) {
 			blockColorList.add((IColoredBlock) block);
 		}
@@ -131,10 +127,6 @@ public class ModelManager {
 			if (item != null) {
 				itemModelRegister.registerModel(item, INSTANCE);
 			}
-		}
-
-		for (IStateMapperRegister stateMapperRegister : stateMapperRegisters) {
-			stateMapperRegister.registerStateMapper();
 		}
 	}
 

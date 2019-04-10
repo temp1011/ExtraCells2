@@ -1,7 +1,5 @@
 package extracells.block;
 
-import javax.annotation.Nullable;
-
 import appeng.api.config.SecurityPermissions;
 import extracells.api.IWrenchHandler;
 import extracells.util.PermissionUtil;
@@ -81,7 +79,7 @@ public class BlockVibrationChamberFluid extends BlockEC implements TGuiBlock {
 	@Override
 	public Object getClientGuiElement(EntityPlayer player, World world, BlockPos pos) {
 		TileEntity tileEntity = world.getTileEntity(pos);
-		if (tileEntity != null && tileEntity instanceof TileEntityVibrationChamberFluid) {
+		if (tileEntity instanceof TileEntityVibrationChamberFluid) {
 			return new GuiVibrationChamberFluid(player, (TileEntityVibrationChamberFluid) tileEntity);
 		}
 		return null;
@@ -90,7 +88,7 @@ public class BlockVibrationChamberFluid extends BlockEC implements TGuiBlock {
 	@Override
 	public Object getServerGuiElement(EntityPlayer player, World world, BlockPos pos) {
 		TileEntity tileEntity = world.getTileEntity(pos);
-		if (tileEntity != null && tileEntity instanceof TileEntityVibrationChamberFluid) {
+		if (tileEntity instanceof TileEntityVibrationChamberFluid) {
 			return new ContainerVibrationChamberFluid(player.inventory, (TileEntityVibrationChamberFluid) tileEntity);
 		}
 		return null;

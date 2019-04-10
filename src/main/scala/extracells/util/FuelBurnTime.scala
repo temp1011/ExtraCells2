@@ -21,7 +21,7 @@ object FuelBurnTime {
     if (fluid == null)
       return 0
     if (fluidBurnTimes.contains(fluid))
-      return fluidBurnTimes.get(fluid).get
+      return fluidBurnTimes(fluid)
     if (Integration.Mods.BCFUEL.isEnabled)
       return getBCBurnTime(fluid)
     0

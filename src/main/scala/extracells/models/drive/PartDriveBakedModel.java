@@ -31,9 +31,8 @@ public class PartDriveBakedModel implements IBakedModel {
 
 	@Override
 	public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
-		List<BakedQuad> result = new ArrayList<>();
 
-		result.addAll(bakedBase.getQuads(state, side, rand));
+		List<BakedQuad> result = new ArrayList<>(bakedBase.getQuads(state, side, rand));
 
 		if(!PartDrive.tempDriveStates.isEmpty()){
 			DriveSlotsState slotsState = PartDrive.tempDriveStates.remove();

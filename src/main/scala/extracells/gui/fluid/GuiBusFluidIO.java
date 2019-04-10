@@ -34,7 +34,7 @@ public class GuiBusFluidIO extends GuiBase<ContainerBusFluidIO> implements
 
 	private PartFluidIO part;
 	private byte filterSize;
-	private List<WidgetFluidSlot> fluidSlotList = new ArrayList<WidgetFluidSlot>();
+	private List<WidgetFluidSlot> fluidSlotList = new ArrayList<>();
 	private boolean redstoneControlled;
 	private boolean hasNetworkTool;
 

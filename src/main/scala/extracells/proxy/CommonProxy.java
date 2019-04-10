@@ -5,10 +5,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
-import extracells.container.ITickContainer;
 import net.minecraft.block.Block;
-import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 
 import net.minecraft.item.crafting.IRecipe;
@@ -17,7 +16,6 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -57,7 +55,7 @@ public class CommonProxy {
 		@Override
 		public BufferedReader getFile(String path) throws Exception {
 			InputStream resourceAsStream = getClass().getResourceAsStream("/assets/extracells/aerecipes/" + path);
-			InputStreamReader reader = new InputStreamReader(resourceAsStream, "UTF-8");
+			InputStreamReader reader = new InputStreamReader(resourceAsStream, StandardCharsets.UTF_8);
 			return new BufferedReader(reader);
 		}
 	}

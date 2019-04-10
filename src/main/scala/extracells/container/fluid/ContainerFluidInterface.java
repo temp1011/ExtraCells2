@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import appeng.api.implementations.ICraftingPatternItem;
 import appeng.api.util.AEPartLocation;
 import extracells.api.IFluidInterface;
 import extracells.container.IContainerListener;

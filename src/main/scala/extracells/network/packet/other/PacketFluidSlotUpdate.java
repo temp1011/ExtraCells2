@@ -30,16 +30,16 @@ public class PacketFluidSlotUpdate extends Packet {
 	}
 
 	@Override
-	protected void writeData(PacketBufferEC data) throws IOException {
+	protected void writeData(PacketBufferEC data) {
 		data.writeInt(this.filterFluids.size());
-		for (int i = 0; i < this.filterFluids.size(); i++) {
-			data.writeFluid(this.filterFluids.get(i));
+		for (Fluid filterFluid : this.filterFluids) {
+			data.writeFluid(filterFluid);
 		}
 	}
 
 	public static class Handler implements IPacketHandlerClient {
 		@Override
-		public void onPacketData(PacketBufferEC data, EntityPlayer player) throws IOException {
+		public void onPacketData(PacketBufferEC data, EntityPlayer player) {
 			List<Fluid> filterFluids = new LinkedList<>();
 			int size = data.readInt();
 			for (int i = 0; i < size; i++) {

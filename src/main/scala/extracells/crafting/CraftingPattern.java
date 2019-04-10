@@ -9,7 +9,6 @@ import net.minecraft.world.World;
 
 import net.minecraftforge.fluids.FluidStack;
 
-import appeng.api.AEApi;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
@@ -34,13 +33,7 @@ public class CraftingPattern implements IFluidCraftingPatternDetails,
 	}
 
 	public int compareInt(int int1, int int2) {
-		if (int1 == int2) {
-			return 0;
-		}
-		if (int1 < int2) {
-			return -1;
-		}
-		return 1;
+		return Integer.compare(int1, int2);
 	}
 
 	@Override

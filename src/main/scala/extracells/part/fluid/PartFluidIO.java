@@ -169,7 +169,7 @@ public abstract class PartFluidIO extends PartECBase implements IGridTickable, I
 	}
 
 	public List<Fluid> getActiveFilters() {
-		List<Fluid> filter = new ArrayList<Fluid>();
+		List<Fluid> filter = new ArrayList<>();
 		filter.add(this.filterFluids[4]);
 
 		if (this.filterSize >= 1) {

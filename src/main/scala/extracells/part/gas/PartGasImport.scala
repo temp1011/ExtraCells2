@@ -155,8 +155,8 @@ class PartGasImport extends PartFluidImport with IGasHandler with ITubeConnectio
 
   @Optional.Method(modid = "MekanismAPI|gas")
   override def hasCapability(capability: Capability[_]): Boolean = {
-    (capability == Capabilities.GAS_HANDLER_CAPABILITY ||
-      capability == Capabilities.TUBE_CONNECTION_CAPABILITY)
+    capability == Capabilities.GAS_HANDLER_CAPABILITY ||
+      capability == Capabilities.TUBE_CONNECTION_CAPABILITY
   }
 
   @Optional.Method(modid = "MekanismAPI|gas")

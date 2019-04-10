@@ -40,6 +40,6 @@ public class WirelessTermRegistry {
 		}
 	}
 
-	static List<IWirelessGasFluidTermHandler> handlers = new ArrayList<IWirelessGasFluidTermHandler>();
+	static List<IWirelessGasFluidTermHandler> handlers = new ArrayList<>();
 
 }

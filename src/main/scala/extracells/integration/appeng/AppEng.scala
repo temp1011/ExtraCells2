@@ -4,7 +4,7 @@ import extracells.api.ECApi
 
 object AppEng {
 
-  def init: Unit ={
+  def init(): Unit ={
     ECApi.instance.registerWrenchHandler(WrenchHandler)
   }
 

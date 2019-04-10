@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.Optional.{Interface, InterfaceList, Method}
 ))
 trait GasInterfaceBase extends IGasHandler with ITubeConnection with IPowerChannelState with IActionHost with IFluidSlotListener {
 
-  val isMekanismLoaded = MEKANISM.isEnabled
+  val isMekanismLoaded: Boolean = MEKANISM.isEnabled
 
   @Method(modid = "MekanismAPI|gas")
   def getGasTank(side: EnumFacing): GasTank
@@ -48,11 +48,10 @@ trait GasInterfaceBase extends IGasHandler with ITubeConnection with IPowerChann
 
   def setFilter(side: AEPartLocation, fluid: String)
 
-  def hasFilter(side: AEPartLocation) = getFilter(side) != -1
+  def hasFilter(side: AEPartLocation): Boolean = getFilter(side) != -1
 
   @Method(modid = "MekanismAPI|gas")
   def exportGas(side: EnumFacing, gas: GasStack, pos: DimensionalCoord): Int = {
-    val tank = getGasTank(side)
     val world = pos.getWorld
     if (world == null)
       return 0

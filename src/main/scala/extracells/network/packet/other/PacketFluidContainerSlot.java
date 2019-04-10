@@ -27,7 +27,7 @@ public class PacketFluidContainerSlot extends Packet {
 	}
 
 	@Override
-	protected void writeData(PacketBufferEC data) throws IOException {
+	protected void writeData(PacketBufferEC data) {
 		data.writeTile(this.fluidFiller);
 		data.writeItemStack(this.container);
 	}

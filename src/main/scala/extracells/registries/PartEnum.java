@@ -38,8 +38,6 @@ import extracells.part.gas.PartGasStorage;
 import extracells.part.gas.PartGasStorageMonitor;
 import extracells.part.gas.PartGasTerminal;
 
-import javax.annotation.Nullable;
-
 public enum PartEnum {
 	FLUIDEXPORT("fluid.export", PartFluidExport.class, "fluid.IO", generatePair(Upgrades.CAPACITY, 2), generatePair(Upgrades.REDSTONE, 1), generatePair(Upgrades.SPEED, 2)),
 	FLUIDIMPORT("fluid.import", PartFluidImport.class, "fluid.IO", generatePair(Upgrades.CAPACITY, 2), generatePair(Upgrades.REDSTONE, 1), generatePair(Upgrades.SPEED, 2)),
@@ -80,7 +78,7 @@ public enum PartEnum {
 
 	public static ItemStack getPartByName(String name){
 		for(int i = 0; i < values().length; i++){
-			if (values()[i].name == name)
+			if (values()[i].name.equals(name))
 				return new ItemStack(ItemEnum.PARTITEM.getItem(), 1, i);
 		}
 		return null;
@@ -96,7 +94,7 @@ public enum PartEnum {
 	private String groupName;
 	@SideOnly(Side.CLIENT)
 	private Optional<ModelResourceLocation> itemModel;
-	private Map<Upgrades, Integer> upgrades = new HashMap<Upgrades, Integer>();
+	private Map<Upgrades, Integer> upgrades = new HashMap<>();
 
 	PartEnum(String name, Class<? extends PartECBase> partClass) {
 		this(name, partClass, null, (Integration.Mods) null);

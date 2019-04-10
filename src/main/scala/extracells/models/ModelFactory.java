@@ -17,16 +17,8 @@ import java.util.List;
 public class ModelFactory {
 	private static final FaceBakery bakery = new FaceBakery();
 
-	public static ImmutableList<BakedQuad> createCube(Vector3f from, Vector3f to, TextureAtlasSprite sprite) {
-		ImmutableList.Builder builder = new ImmutableList.Builder();
-		for (EnumFacing facing : EnumFacing.VALUES) {
-			builder.add(createQuad(facing, from, to, sprite));
-		}
-		return builder.build();
-	}
-
 	public static ImmutableList<BakedQuad> createCubeOpen(Vector3f from, Vector3f to, TextureAtlasSprite sprite, List<EnumFacing> openSides) {
-		ImmutableList.Builder builder = new ImmutableList.Builder();
+		ImmutableList.Builder<BakedQuad> builder = new ImmutableList.Builder<>();
 		for (EnumFacing facing : EnumFacing.VALUES) {
 			if(openSides.contains(facing))
 				continue;
@@ -48,13 +40,7 @@ public class ModelFactory {
 		float maxU;
 		float maxV;
 		switch (face) {
-			case SOUTH: {
-				minU = from.x;
-				minV = from.y;
-				maxU = to.x;
-				maxV = to.y;
-				break;
-			}
+			case SOUTH:
 			case NORTH: {
 				minU = from.x;
 				minV = from.y;
@@ -62,13 +48,7 @@ public class ModelFactory {
 				maxV = to.y;
 				break;
 			}
-			case WEST: {
-				minU = from.z;
-				minV = from.y;
-				maxU = to.z;
-				maxV = to.y;
-				break;
-			}
+			case WEST:
 			case EAST: {
 				minU = from.z;
 				minV = from.y;
@@ -76,13 +56,7 @@ public class ModelFactory {
 				maxV = to.y;
 				break;
 			}
-			case UP: {
-				minU = from.x;
-				minV = from.z;
-				maxU = to.x;
-				maxV = to.z;
-				break;
-			}
+			case UP:
 			case DOWN: {
 				minU = from.x;
 				minV = from.z;

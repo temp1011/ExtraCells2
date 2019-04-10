@@ -76,9 +76,10 @@ public class FluidInterfaceInventory implements IInventory {
 
 	@Override
 	public boolean isEmpty() {
-		for (int i = 0; i < inv.length; i++){
-			if(inv[i] != null && !inv[i].isEmpty())
+		for (ItemStack itemStack : inv) {
+			if (itemStack != null && !itemStack.isEmpty()) {
 				return true;
+			}
 		}
 		return false;
 	}

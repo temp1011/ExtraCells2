@@ -31,14 +31,14 @@ public class PacketOreDictExport extends Packet {
 	}
 
 	@Override
-	protected void writeData(PacketBufferEC data) throws IOException {
+	protected void writeData(PacketBufferEC data) {
 		data.writeString(filter);
 	}
 
 	@SideOnly(Side.CLIENT)
 	public static class HandlerClient implements IPacketHandlerClient {
 		@Override
-		public void onPacketData(PacketBufferEC data, EntityPlayer player) throws IOException {
+		public void onPacketData(PacketBufferEC data, EntityPlayer player) {
 			String filter = data.readString();
 			if (filter == null) {
 				return;
@@ -49,7 +49,7 @@ public class PacketOreDictExport extends Packet {
 
 	public static class HandlerServer implements IPacketHandlerServer {
 		@Override
-		public void onPacketData(PacketBufferEC data, EntityPlayerMP player) throws IOException {
+		public void onPacketData(PacketBufferEC data, EntityPlayerMP player) {
 			String filter = data.readString();
 			ContainerOreDictExport container = GuiUtil.getContainer(player, ContainerOreDictExport.class);
 			if (filter == null || container == null) {

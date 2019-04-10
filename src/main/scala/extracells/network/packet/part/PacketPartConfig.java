@@ -60,7 +60,7 @@ public class PacketPartConfig extends Packet {
 	}
 
 	@Override
-	protected void writeData(PacketBufferEC data) throws IOException {
+	protected void writeData(PacketBufferEC data) {
 		data.writePart(part);
 		data.writeString(name);
 		data.writeString(value);
@@ -74,7 +74,7 @@ public class PacketPartConfig extends Packet {
 	@SideOnly(Side.CLIENT)
 	public static class HandlerClient implements IPacketHandlerClient {
 		@Override
-		public void onPacketData(PacketBufferEC data, EntityPlayer player) throws IOException {
+		public void onPacketData(PacketBufferEC data, EntityPlayer player) {
 			PartECBase part = data.readPart(player.world);
 			String name = data.readString();
 			String value = data.readString();
@@ -126,7 +126,7 @@ public class PacketPartConfig extends Packet {
 
 	public static class HandlerServer implements IPacketHandlerServer {
 		@Override
-		public void onPacketData(PacketBufferEC data, EntityPlayerMP player) throws IOException {
+		public void onPacketData(PacketBufferEC data, EntityPlayerMP player) {
 			PartECBase part = data.readPart(player.world);
 			String name = data.readString();
 			String value = data.readString();

@@ -20,22 +20,22 @@ trait WirelessTermBase extends PowerItem {
   override val MAX_POWER: Double = 1600000
 
   def getPowerFlow(itemStack: ItemStack): AccessRestriction = {
-    return AccessRestriction.READ_WRITE
+    AccessRestriction.READ_WRITE
   }
 
 
   override def getDurabilityForDisplay(itemStack: ItemStack): Double = {
-    return 1 - getAECurrentPower(itemStack) / MAX_POWER
+    1 - getAECurrentPower(itemStack) / MAX_POWER
   }
 
   def canHandle(is: ItemStack): Boolean = {
     if (is == null) return false
-    return is.getItem eq this
+    is.getItem eq this
   }
 
   def getEncryptionKey(itemStack: ItemStack): String = {
     if (!itemStack.hasTagCompound) itemStack.setTagCompound(new NBTTagCompound)
-    return itemStack.getTagCompound.getString("key")
+    itemStack.getTagCompound.getString("key")
   }
 
   def setEncryptionKey(itemStack: ItemStack, encKey: String, name: String) {
@@ -45,12 +45,12 @@ trait WirelessTermBase extends PowerItem {
   }
 
   def hasPower(player: EntityPlayer, amount: Double, is: ItemStack): Boolean = {
-    return getAECurrentPower(is) >= amount
+    getAECurrentPower(is) >= amount
   }
 
   def usePower(player: EntityPlayer, amount: Double, is: ItemStack): Boolean = {
     extractAEPower(is, amount, Actionable.MODULATE)
-    return true
+    true
   }
 
   @SuppressWarnings(Array("unchecked", "rawtypes"))
@@ -64,13 +64,13 @@ trait WirelessTermBase extends PowerItem {
   }
 
   override def showDurabilityBar(itemStack: ItemStack): Boolean = {
-    return true
+    true
   }
 
   @SuppressWarnings(Array("rawtypes", "unchecked"))
   @SideOnly(Side.CLIENT)
   override def addInformation(itemStack: ItemStack, world: World, list: util.List[String], par4: ITooltipFlag) {
-    val list2 = list.asInstanceOf[util.List[String]];
+    val list2 = list.asInstanceOf[util.List[String]]
     if (!itemStack.hasTagCompound) itemStack.setTagCompound(new NBTTagCompound)
     val encryptionKey: String = itemStack.getTagCompound.getString("key")
     val aeCurrentPower: Double = getAECurrentPower(itemStack)

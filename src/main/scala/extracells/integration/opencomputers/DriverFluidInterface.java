@@ -45,7 +45,7 @@ public class DriverFluidInterface implements DriverBlock, EnvironmentProvider {
 	@Override
 	public ManagedEnvironment createEnvironment(World world, BlockPos pos, EnumFacing side) {
 		TileEntity tile = world.getTileEntity(pos);
-		if (tile == null || (!(tile instanceof IPartHost || tile instanceof IFluidInterface))) {
+		if ((!(tile instanceof IPartHost || tile instanceof IFluidInterface))) {
 			return null;
 		}
 		return new Enviroment(tile);

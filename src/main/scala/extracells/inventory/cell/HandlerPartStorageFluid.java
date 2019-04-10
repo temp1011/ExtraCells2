@@ -16,7 +16,6 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
-import appeng.api.AEApi;
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
 import appeng.api.networking.IGrid;
@@ -36,7 +35,7 @@ public class HandlerPartStorageFluid implements IHandlerPartBase<IAEFluidStack> 
 	protected PartFluidStorage node;
 	protected IFluidHandler tank;
 	protected AccessRestriction access = AccessRestriction.READ_WRITE;
-	protected List<Fluid> prioritizedFluids = new ArrayList<Fluid>();
+	protected List<Fluid> prioritizedFluids = new ArrayList<>();
 	protected boolean inverted;
 	private IStorageMonitorableAccessor externalHandler = null;
 	protected TileEntity tile = null;
@@ -108,7 +107,7 @@ public class HandlerPartStorageFluid implements IHandlerPartBase<IAEFluidStack> 
 		}
 		FluidStack toDrain = request.getFluidStack();
 		int drained = 0;
-		int drained2 = 0;
+		int drained2;
 		do {
 			FluidStack drain = this.tank.drain(new FluidStack(toDrain.getFluid(), toDrain.amount - drained), mode == Actionable.MODULATE);
 			if (drain == null) {
@@ -223,7 +222,7 @@ public class HandlerPartStorageFluid implements IHandlerPartBase<IAEFluidStack> 
 		}
 		FluidStack toFill = input.getFluidStack();
 		int filled = 0;
-		int filled2 = 0;
+		int filled2;
 		do {
 			filled2 = this.tank.fill(new FluidStack(toFill.getFluid(), toFill.amount - filled), mode == Actionable.MODULATE);
 			filled = filled + filled2;
@@ -298,7 +297,7 @@ public class HandlerPartStorageFluid implements IHandlerPartBase<IAEFluidStack> 
 			return;
 		}
 		if (tileEntity.hasCapability(Capabilities.STORAGE_MONITORABLE_ACCESSOR, node.getFacing().getOpposite())) {
-			IStorageMonitorable monitor = null;
+			IStorageMonitorable monitor;
 			externalSystem = tileEntity.getCapability(Capabilities.STORAGE_MONITORABLE_ACCESSOR, node.getFacing().getOpposite());
 			monitor = externalSystem.getInventory(new MachineSource(this.node));
 			if (monitor == null) {

@@ -13,10 +13,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import appeng.api.AEApi;
 import appeng.api.parts.IPart;
 import appeng.api.parts.IPartHost;
-import appeng.api.storage.IStorageHelper;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.AEPartLocation;
@@ -120,14 +118,14 @@ public class PacketBufferEC extends PacketBuffer {
 		return TileUtil.getTile(world, pos, tileClass);
 	}
 
-	public void writeAEFluidStacks(IItemList<IAEFluidStack> fluidStackList) throws IOException {
+	public void writeAEFluidStacks(IItemList<IAEFluidStack> fluidStackList) {
 		for (IAEFluidStack stack : fluidStackList) {
 			FluidStack fluidStack = stack.getFluidStack();
 			writeFluidStack(fluidStack);
 		}
 	}
 
-	public IItemList<IAEFluidStack> readAEFluidStacks() throws IOException {
+	public IItemList<IAEFluidStack> readAEFluidStacks() {
 		IItemList<IAEFluidStack> fluidStackList = StorageChannels.FLUID().createList();
 		while (readableBytes() > 0) {
 			FluidStack fluidStack = readFluidStack();

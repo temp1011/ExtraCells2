@@ -14,7 +14,7 @@ import extracells.util.GuiUtil;
 public class PacketStorageOpenContainer extends Packet {
 
 	@Override
-	public void writeData(PacketBufferEC data) throws IOException {
+	public void writeData(PacketBufferEC data) {
 	}
 
 	@Override
@@ -24,7 +24,7 @@ public class PacketStorageOpenContainer extends Packet {
 
 	public static class Handler implements IPacketHandlerServer {
 		@Override
-		public void onPacketData(PacketBufferEC data, EntityPlayerMP player) throws IOException {
+		public void onPacketData(PacketBufferEC data, EntityPlayerMP player) {
 			ContainerStorage containerStorage = GuiUtil.getContainer(player, ContainerStorage.class);
 			if (containerStorage == null) {
 				return;

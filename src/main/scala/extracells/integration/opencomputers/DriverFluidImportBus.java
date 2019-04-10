@@ -37,13 +37,13 @@ public class DriverFluidImportBus extends DriverBase<PartFluidImport> {
 
 	private static PartFluidImport getImportBus(World world, BlockPos pos, AEPartLocation dir){
 		TileEntity tile = world.getTileEntity(pos);
-		if (tile == null || (!(tile instanceof IPartHost)))
+		if ((!(tile instanceof IPartHost)))
 			return null;
 		IPartHost host = (IPartHost) tile;
 		if(dir == null || dir == AEPartLocation.INTERNAL){
 			for (AEPartLocation side: AEPartLocation.SIDE_LOCATIONS){
 				IPart part = host.getPart(side);
-				if (part != null && part instanceof PartFluidImport &&!(part instanceof PartGasImport))
+				if (part instanceof PartFluidImport && !(part instanceof PartGasImport))
 					return (PartFluidImport) part;
 			}
 			return null;

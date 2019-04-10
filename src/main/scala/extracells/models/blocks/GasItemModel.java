@@ -38,7 +38,7 @@ public class GasItemModel implements IModel {
 		}
 
 		@Override
-		public IModel loadModel(ResourceLocation modelLocation) throws Exception {
+		public IModel loadModel(ResourceLocation modelLocation) {
 			String gasName = modelLocation.getResourcePath().replace("models/item/gas/", "");
 			Gas gas = GasRegistry.getGas(gasName);
 			if (gas == null) {

@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.Optional
 
 
 class PartGasStorageMonitor extends PartFluidStorageMonitor {
-  val isMekEnabled = Integration.Mods.MEKANISMGAS.isEnabled
+  val isMekEnabled: Boolean = Integration.Mods.MEKANISMGAS.isEnabled
 
   override def onActivate(player: EntityPlayer, hand: EnumHand, pos: Vec3d): Boolean = {
     if (isMekEnabled)
@@ -36,7 +36,7 @@ class PartGasStorageMonitor extends PartFluidStorageMonitor {
       this.fluid = null
       this.amount = 0L
       val host: IPartHost = getHost
-      if (host != null) host.markForUpdate
+      if (host != null) host.markForUpdate()
       return true
     }
     val rayTraceResult = new RayTraceResult(pos, getFacing, this.getLocation.getPos)
@@ -45,7 +45,7 @@ class PartGasStorageMonitor extends PartFluidStorageMonitor {
       this.locked = !this.locked
       wrenchHandler.wrenchUsed(s, player, rayTraceResult, hand)
       val host: IPartHost = getHost
-      if (host != null) host.markForUpdate
+      if (host != null) host.markForUpdate()
       if (this.locked) player.sendMessage(new TextComponentTranslation("chat.appliedenergistics2.isNowLocked"))
       else player.sendMessage(new TextComponentTranslation("chat.appliedenergistics2.isNowUnlocked"))
       return true
@@ -63,7 +63,7 @@ class PartGasStorageMonitor extends PartFluidStorageMonitor {
       }
       if (this.watcher != null) this.watcher.add(StorageChannels.GAS.createStack(this.fluid))
       val host: IPartHost = getHost
-      if (host != null) host.markForUpdate
+      if (host != null) host.markForUpdate()
       onStackChange()
       return true
     }

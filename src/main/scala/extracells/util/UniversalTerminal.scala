@@ -9,10 +9,10 @@ import net.minecraft.item.ItemStack
 
 
 object UniversalTerminal {
-  val isMekLoaded = Mods.MEKANISMGAS.isEnabled
-  val isThaLoaded = Mods.THAUMATICENERGISTICS.isEnabled
-  val isWcLLoaded = Mods.WIRELESSCRAFTING.isEnabled
-  val arrayLength = {
+  val isMekLoaded: Boolean = Mods.MEKANISMGAS.isEnabled
+  val isThaLoaded: Boolean = Mods.THAUMATICENERGISTICS.isEnabled
+  val isWcLLoaded: Boolean = Mods.WIRELESSCRAFTING.isEnabled
+  val arrayLength: Int = {
     var length = 2
     if (isMekLoaded)
       length += 1

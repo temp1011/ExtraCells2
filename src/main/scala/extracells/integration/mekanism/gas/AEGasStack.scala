@@ -20,7 +20,7 @@ class AEGasStack extends IAEGasStack{
   private var canCraft = false
   private var stackSize: Long = 0L
   private var requestable: Long = 0L
-  private var gas: Gas = null
+  private var gas: Gas = _
 
   def this(oldStack: AEGasStack){
     this
@@ -57,7 +57,7 @@ class AEGasStack extends IAEGasStack{
     this
     val lenght = data.readInt()
 
-    var bytes: Array[Byte] = new Array[Byte](lenght)
+    val bytes: Array[Byte] = new Array[Byte](lenght)
     data.readBytes(bytes)
 
     val inputStream = new DataInputStream( new ByteArrayInputStream(bytes))
@@ -117,7 +117,7 @@ class AEGasStack extends IAEGasStack{
   }
 
   override def empty(): IAEGasStack = {
-    val newStack = copy
+    val newStack = copy()
     newStack.reset
     newStack
   }
@@ -178,12 +178,12 @@ class AEGasStack extends IAEGasStack{
     this
   }
 
-  override def hashCode() = gas.hashCode
+  override def hashCode(): Int = gas.hashCode
 
   override def equals(obj: scala.Any): Boolean = {
     obj match {
-      case gasStack : AEGasStack => (this.canCraft == gasStack.canCraft &&
-        this.requestable == gasStack.requestable && this.canCraft == gasStack.canCraft && this.gas == gasStack.gas)
+      case gasStack : AEGasStack => this.canCraft == gasStack.canCraft &&
+        this.requestable == gasStack.requestable && this.canCraft == gasStack.canCraft && this.gas == gasStack.gas
       case _ => false
     }
   }

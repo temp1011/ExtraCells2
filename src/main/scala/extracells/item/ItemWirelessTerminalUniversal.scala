@@ -30,11 +30,11 @@ import p455w0rd.wct.api.IWirelessCraftingTerminalItem
 
 @Optional.Interface(iface = "p455w0rd.wct.api.IWirelessCraftingTerminalItem", modid = "wct", striprefs = true)
 object ItemWirelessTerminalUniversal extends ItemECBase with WirelessTermBase with IWirelessFluidTermHandler with IWirelessGasTermHandler with IWirelessTermHandler /*with EssensiaTerminal*/ with IWirelessCraftingTerminalItem {
-  val isTeEnabled = Integration.Mods.THAUMATICENERGISTICS.isEnabled
-  val isMekEnabled = Integration.Mods.MEKANISMGAS.isEnabled
-  val isWcEnabled = Integration.Mods.WIRELESSCRAFTING.isEnabled
+  val isTeEnabled: Boolean = Integration.Mods.THAUMATICENERGISTICS.isEnabled
+  val isMekEnabled: Boolean = Integration.Mods.MEKANISMGAS.isEnabled
+  val isWcEnabled: Boolean = Integration.Mods.WIRELESSCRAFTING.isEnabled
 
-  def THIS = this
+  def THIS: ItemWirelessTerminalUniversal.type = this
 
   if (isWcEnabled) {
     ECApi.instance.registerWirelessTermHandler(this)
@@ -88,74 +88,16 @@ object ItemWirelessTerminalUniversal extends ItemECBase with WirelessTermBase wi
       tag.setByte("type", 0)
     if (entityPlayer.isSneaking)
       return new ActionResult(EnumActionResult.SUCCESS, changeMode(itemStack, entityPlayer, tag))
-    val matchted = tag.getByte("type") match {
-      case 0 => AEApi.instance.registries.wireless.openWirelessTerminalGui(itemStack, world, entityPlayer)
-      case 1 => ECApi.instance.openWirelessFluidTerminal(entityPlayer, hand, world)
-      case 2 => ECApi.instance.openWirelessGasTerminal(entityPlayer, hand, world)
-      //case 3 => if(isTeEnabled) ThaumaticEnergistics.openEssentiaTerminal(entityPlayer, this)
-      case _ =>
-    }
     new ActionResult(EnumActionResult.SUCCESS, itemStack)
   }
 
   def changeMode(itemStack: ItemStack, player: EntityPlayer, tag: NBTTagCompound): ItemStack = {
     val installed = getInstalledModules(itemStack)
-    val matchted = tag.getByte("type") match {
-      case 0 =>
-        if (installed.contains(WirelessTerminalType.FLUID))
-          tag.setByte("type", 1)
-        else if (isMekEnabled && installed.contains(WirelessTerminalType.GAS))
-          tag.setByte("type", 2)
-        else if (isTeEnabled && installed.contains(WirelessTerminalType.ESSENTIA))
-          tag.setByte("type", 3)
-        else if (isWcEnabled && installed.contains(WirelessTerminalType.CRAFTING))
-          tag.setByte("type", 4)
-      case 1 =>
-        if (isMekEnabled && installed.contains(WirelessTerminalType.GAS))
-          tag.setByte("type", 2)
-        else if (isTeEnabled && installed.contains(WirelessTerminalType.ESSENTIA))
-          tag.setByte("type", 3)
-        else if (isWcEnabled && installed.contains(WirelessTerminalType.CRAFTING))
-          tag.setByte("type", 4)
-        else if (installed.contains(WirelessTerminalType.ITEM))
-          tag.setByte("type", 0)
-      case 2 =>
-        if (isTeEnabled && installed.contains(WirelessTerminalType.ESSENTIA))
-          tag.setByte("type", 3)
-        else if (isWcEnabled && installed.contains(WirelessTerminalType.CRAFTING))
-          tag.setByte("type", 4)
-        else if (installed.contains(WirelessTerminalType.ITEM))
-          tag.setByte("type", 0)
-        else if (installed.contains(WirelessTerminalType.FLUID))
-          tag.setByte("type", 1)
-      case 3 =>
-        if (isWcEnabled && installed.contains(WirelessTerminalType.CRAFTING))
-          tag.setByte("type", 4)
-        else if (installed.contains(WirelessTerminalType.ITEM))
-          tag.setByte("type", 0)
-        else if (installed.contains(WirelessTerminalType.FLUID))
-          tag.setByte("type", 1)
-        else if (isMekEnabled && installed.contains(WirelessTerminalType.GAS))
-          tag.setByte("type", 2)
-      case _ =>
-        if (installed.contains(WirelessTerminalType.ITEM))
-          tag.setByte("type", 0)
-        else if (installed.contains(WirelessTerminalType.FLUID))
-          tag.setByte("type", 1)
-        else if (isMekEnabled && installed.contains(WirelessTerminalType.GAS))
-          tag.setByte("type", 2)
-        else if (isTeEnabled && installed.contains(WirelessTerminalType.ESSENTIA))
-          tag.setByte("type", 3)
-        else if (isWcEnabled && installed.contains(WirelessTerminalType.CRAFTING))
-          tag.setByte("type", 4)
-        else
-          tag.setByte("type", 0)
-    }
     itemStack
   }
 
   @SideOnly(Side.CLIENT)
-  override def registerModel(item: Item, manager: ModelManager) =
+  override def registerModel(item: Item, manager: ModelManager): Unit =
     manager.registerItemModel(item, 0, "terminals/universal_wireless")
 
 
@@ -164,13 +106,13 @@ object ItemWirelessTerminalUniversal extends ItemECBase with WirelessTermBase wi
     val tag = ensureTagCompound(itemStack)
     if (!tag.hasKey("type"))
       tag.setByte("type", 0)
-    val list2 = list.asInstanceOf[util.List[String]];
+    val list2 = list.asInstanceOf[util.List[String]]
     list2.add(I18n.translateToLocal("extracells.tooltip.mode") + ": " + I18n.translateToLocal("extracells.tooltip." + WirelessTerminalType.values().apply(tag.getByte("type")).toString.toLowerCase))
     list2.add(I18n.translateToLocal("extracells.tooltip.installed"))
     val it = getInstalledModules(itemStack).iterator
     while (it.hasNext)
       list2.add("- " + I18n.translateToLocal("extracells.tooltip." + it.next.name.toLowerCase))
-    super.addInformation(itemStack, world, list, advanced);
+    super.addInformation(itemStack, world, list, advanced)
   }
 
   def installModule(itemStack: ItemStack, module: WirelessTerminalType): Unit = {

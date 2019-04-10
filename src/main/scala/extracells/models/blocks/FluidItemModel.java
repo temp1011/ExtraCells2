@@ -41,7 +41,7 @@ public class FluidItemModel implements IModel {
 		}
 
 		@Override
-		public IModel loadModel(ResourceLocation modelLocation) throws Exception {
+		public IModel loadModel(ResourceLocation modelLocation) {
 			String fluidName = modelLocation.getResourcePath().replace("models/item/fluid/", "");
 			Fluid fluid = FluidRegistry.getFluid(fluidName);
 			if (fluid == null) {

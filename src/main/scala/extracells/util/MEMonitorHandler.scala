@@ -11,7 +11,7 @@ import com.google.common.collect.ImmutableList
 
 
 class MEMonitorHandler[T <: IAEStack[T]](val internalHandler: IMEInventoryHandler[T], val chan: IStorageChannel[T]) extends IMEMonitor[T] {
-  final private var cachedList: IItemList[T] = chan.createList()
+  final private val cachedList: IItemList[T] = chan.createList()
   final private val listeners: util.HashMap[IMEMonitorHandlerReceiver[T], AnyRef] = new util.HashMap[IMEMonitorHandlerReceiver[T], AnyRef]
   protected var hasChanged: Boolean = true
 
@@ -25,7 +25,7 @@ class MEMonitorHandler[T <: IAEStack[T]](val internalHandler: IMEInventoryHandle
 
   def injectItems(input: T, mode: Actionable, src: IActionSource): T = {
     if (mode eq Actionable.SIMULATE) return this.getHandler.injectItems(input, mode, src)
-    this.monitorDifference(input.copy, this.getHandler.injectItems(input, mode, src), false, src)
+    this.monitorDifference(input.copy, this.getHandler.injectItems(input, mode, src), extraction = false, src)
   }
 
   protected def getHandler: IMEInventoryHandler[T] = this.internalHandler
@@ -61,7 +61,7 @@ class MEMonitorHandler[T <: IAEStack[T]](val internalHandler: IMEInventoryHandle
 
   def extractItems(request: T, mode: Actionable, src: IActionSource): T = {
     if (mode eq Actionable.SIMULATE) return this.getHandler.extractItems(request, mode, src)
-    this.monitorDifference(request.copy, this.getHandler.extractItems(request, mode, src), true, src)
+    this.monitorDifference(request.copy, this.getHandler.extractItems(request, mode, src), extraction = true, src)
   }
 
   def getChannel: IStorageChannel[T] = this.getHandler.getChannel

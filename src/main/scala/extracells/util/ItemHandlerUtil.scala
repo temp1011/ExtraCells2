@@ -10,7 +10,7 @@ object ItemHandlerUtil {
     if (itemHandler == null)
       return stack
     var itemStackRemaining = stack.copy()
-    for (i <- 0 to itemHandler.getSlots - 1){
+    for (i <- 0 until itemHandler.getSlots){
       itemStackRemaining = itemHandler.insertItem(i, itemStackRemaining, simulate)
       if (itemStackRemaining.isEmpty)
         return ItemStack.EMPTY

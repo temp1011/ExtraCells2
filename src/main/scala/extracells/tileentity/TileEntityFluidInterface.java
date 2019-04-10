@@ -79,7 +79,7 @@ public class TileEntityFluidInterface extends TileBase implements
 	IFluidSlotListener, IStorageMonitorable,
 	ICraftingProvider, IWailaTile, ITickable, IGuiProvider {
 
-	List<IContainerListener> listeners = new ArrayList<IContainerListener>();
+	List<IContainerListener> listeners = new ArrayList<>();
 	private ECFluidGridBlock gridBlock;
 	private IGridNode node = null;
 	public FluidTank[] tanks = new FluidTank[6];
@@ -89,19 +89,16 @@ public class TileEntityFluidInterface extends TileBase implements
 	private boolean wasIdle = false;
 	private int tickCount = 0;
 	private boolean update = false;
-	private List<ICraftingPatternDetails> patternHandlers = new ArrayList<ICraftingPatternDetails>();
-	private HashMap<ICraftingPatternDetails, IFluidCraftingPatternDetails> patternConvert = new HashMap<ICraftingPatternDetails, IFluidCraftingPatternDetails>();
-	//private List<IAEItemStack> requestedItems = new ArrayList<IAEItemStack>();
-	//private List<IAEItemStack> removeList = new ArrayList<IAEItemStack>();
+	private HashMap<ICraftingPatternDetails, IFluidCraftingPatternDetails> patternConvert = new HashMap<>();
 	public final FluidInterfaceInventory inventory;
 	private IAEItemStack toExport = null;
 
 	private final Item encodedPattern = AEApi.instance().definitions().items().encodedPattern()
 		.maybeItem().orElse(null);
-	private List<IAEStack> export = new ArrayList<IAEStack>();
-	private List<IAEStack> removeFromExport = new ArrayList<IAEStack>();
+	private List<IAEStack> export = new ArrayList<>();
+	private List<IAEStack> removeFromExport = new ArrayList<>();
 
-	private List<IAEStack> addToExport = new ArrayList<IAEStack>();
+	private List<IAEStack> addToExport = new ArrayList<>();
 
 	//private List<IAEItemStack> watcherList = new ArrayList<IAEItemStack>();
 
@@ -314,7 +311,7 @@ public class TileEntityFluidInterface extends TileBase implements
 
 	@Override
 	public void provideCrafting(ICraftingProviderHelper craftingTracker) {
-		this.patternHandlers = new ArrayList<ICraftingPatternDetails>();
+		List<ICraftingPatternDetails> patternHandlers = new ArrayList<>();
 		this.patternConvert.clear();
 
 		for (ItemStack currentPatternStack : this.inventory.inv) {
@@ -324,7 +321,7 @@ public class TileEntityFluidInterface extends TileBase implements
 
 				if (currentPattern.getPatternForItem(currentPatternStack, world) != null) {
 					IFluidCraftingPatternDetails pattern = new CraftingPattern2(currentPattern.getPatternForItem(currentPatternStack, world));
-					this.patternHandlers.add(pattern);
+					patternHandlers.add(pattern);
 					ItemStack is = makeCraftingPatternItem(pattern);
 					if (is == null) {
 						continue;
@@ -484,7 +481,7 @@ public class TileEntityFluidInterface extends TileBase implements
 		ICraftingPatternDetails patternDetails = this.patternConvert.get(patDetails);
 		if (patternDetails instanceof CraftingPattern) {
 			CraftingPattern patter = (CraftingPattern) patternDetails;
-			HashMap<Fluid, Long> fluids = new HashMap<Fluid, Long>();
+			HashMap<Fluid, Long> fluids = new HashMap<>();
 			for (IAEFluidStack stack : patter.getCondensedFluidInputs()) {
 				if (fluids.containsKey(stack.getFluid())) {
 					Long amount = fluids.get(stack.getFluid()) + stack.getStackSize();
@@ -505,14 +502,14 @@ public class TileEntityFluidInterface extends TileBase implements
 			for (Fluid fluid : fluids.keySet()) {
 				Long amount = fluids.get(fluid);
 				IAEFluidStack extractFluid = storage.getInventory(StorageChannels.FLUID()).extractItems(AEUtils.createFluidStack(
-						new FluidStack(fluid, (int) (amount + 0))), Actionable.SIMULATE, new MachineSource(this));
+						new FluidStack(fluid, (int) (amount).longValue())), Actionable.SIMULATE, new MachineSource(this));
 				if (extractFluid == null || extractFluid.getStackSize() != amount) {
 					return false;
 				}
 			}
 			for (Fluid fluid : fluids.keySet()) {
 				Long amount = fluids.get(fluid);
-				IAEFluidStack extractFluid = storage.getInventory(StorageChannels.FLUID()).extractItems(AEUtils.createFluidStack(new FluidStack(fluid, (int) (amount + 0))), Actionable.MODULATE, new MachineSource(this));
+				IAEFluidStack extractFluid = storage.getInventory(StorageChannels.FLUID()).extractItems(AEUtils.createFluidStack(new FluidStack(fluid, (int) amount.longValue())), Actionable.MODULATE, new MachineSource(this));
 				this.export.add(extractFluid);
 				markForSave = true;
 			}
@@ -925,9 +922,10 @@ public class TileEntityFluidInterface extends TileBase implements
 
 		@Override
 		public boolean isEmpty() {
-			for (int i = 0; i < inv.length; i++){
-				if(inv[i] != null && !inv[i].isEmpty())
+			for (ItemStack itemStack : inv) {
+				if (itemStack != null && !itemStack.isEmpty()) {
 					return true;
+				}
 			}
 			return false;
 		}

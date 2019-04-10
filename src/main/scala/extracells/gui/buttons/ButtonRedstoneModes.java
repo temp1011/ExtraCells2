@@ -20,7 +20,7 @@ import appeng.api.config.RedstoneMode;
 public class ButtonRedstoneModes extends GuiButton implements IToolTipProvider {
 
 	private RedstoneMode redstoneMode;
-	private boolean emitter = false;
+	private boolean emitter;
 
 	public ButtonRedstoneModes(int ID, int xPos, int yPos, int width, int height, RedstoneMode mode) {
 		super(ID, xPos, yPos, width, height, "ScrewStrings :D");
@@ -64,7 +64,7 @@ public class ButtonRedstoneModes extends GuiButton implements IToolTipProvider {
 
 	@Override
 	public List<String> getToolTip(int mouseX, int mouseY) {
-		List<String> description = new ArrayList<String>();
+		List<String> description = new ArrayList<>();
 		description.add(I18n.translateToLocal("gui.tooltips.appliedenergistics2.RedstoneMode"));
 		String explanation = "";
 		switch (this.redstoneMode) {

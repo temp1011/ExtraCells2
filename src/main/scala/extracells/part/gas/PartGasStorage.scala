@@ -19,7 +19,7 @@ class PartGasStorage extends PartFluidStorage {
   handler = new HandlerPartStorageGas(this)
   channel = StorageChannels.GAS
 
-  val isMekanismGasEnabled = Integration.Mods.MEKANISMGAS.isEnabled
+  val isMekanismGasEnabled: Boolean = Integration.Mods.MEKANISMGAS.isEnabled
 
 
   var gasList: Map[AnyRef, Int] = Map()
@@ -49,6 +49,6 @@ class PartGasStorage extends PartFluidStorage {
       val s = stack.getGasStack.asInstanceOf[GasStack].copy
       fluids += (s -> s.amount)
     }
-    !fluids.sameElements(gasList)
+    !(fluids == gasList)
   }
 }

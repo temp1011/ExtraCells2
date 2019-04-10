@@ -30,7 +30,7 @@ public class ECModelLoader implements ICustomModelLoader {
 	}
 
 	@Override
-	public IModel loadModel(ResourceLocation modelLocation) throws Exception {
+	public IModel loadModel(ResourceLocation modelLocation) {
 		return builtInModels.get(modelLocation.getResourcePath());
 	}
 

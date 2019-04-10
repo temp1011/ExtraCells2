@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import extracells.util.*;
-import net.minecraftforge.fluids.FluidUtil;
+
 import org.apache.commons.lang3.tuple.Pair;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -46,7 +46,7 @@ import extracells.part.PartECBase;
 
 public class PartFluidTerminal extends PartECBase implements IGridTickable, IInventoryListener {
 
-	private final List<Object> containers = new ArrayList<Object>();
+	private final List<Object> containers = new ArrayList<>();
 	protected final InventoryPlain inventory = new InventoryPlain(
 		"extracells.part.fluid.terminal", 2, 64, this) {
 

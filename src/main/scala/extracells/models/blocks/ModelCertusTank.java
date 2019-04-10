@@ -102,8 +102,7 @@ public class ModelCertusTank extends BlankModel {
 
 		@Override
 		public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
-			List<BakedQuad> quads = new ArrayList<>();
-			quads.addAll(emptyTank.getQuads(state, side, rand));
+			List<BakedQuad> quads = new ArrayList<>(emptyTank.getQuads(state, side, rand));
 			if (stack != null) {
 				quads.addAll(fluid.getQuads(stack));
 			}

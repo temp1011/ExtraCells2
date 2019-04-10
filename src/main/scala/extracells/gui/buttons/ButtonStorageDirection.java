@@ -65,7 +65,7 @@ public class ButtonStorageDirection extends GuiButton implements IToolTipProvide
 
 	@Override
 	public List<String> getToolTip(int mouseX, int mouseY) {
-		List<String> description = new ArrayList<String>();
+		List<String> description = new ArrayList<>();
 		description.add(I18n.translateToLocal("gui.tooltips.appliedenergistics2.IOMode"));
 		String explanation = "";
 		switch (this.access) {

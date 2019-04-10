@@ -20,9 +20,7 @@ public class UpgradeInventory extends InventoryPlain {
 			return true;
 		} else if (materials.cardSpeed().isSameAs(itemStack)) {
 			return true;
-		} else if (materials.cardRedstone().isSameAs(itemStack)) {
-			return true;
-		}
-		return false;
+		} else
+			return materials.cardRedstone().isSameAs(itemStack);
 	}
 }

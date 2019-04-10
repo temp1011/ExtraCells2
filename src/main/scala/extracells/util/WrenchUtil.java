@@ -11,7 +11,7 @@ import java.util.List;
 
 public class WrenchUtil {
 
-	private static List<IWrenchHandler> handlers = new ArrayList<IWrenchHandler>();
+	private static List<IWrenchHandler> handlers = new ArrayList<>();
 
 	public static void addWrenchHandler(IWrenchHandler handler){
 		handlers.add(handler);

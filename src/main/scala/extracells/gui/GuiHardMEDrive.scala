@@ -18,13 +18,13 @@ class GuiHardMEDrive(inventory: InventoryPlayer, tile: TileEntityHardMeDrive)
   ySize = 166
   private val guiTexture = new ResourceLocation("extracells", "textures/gui/hardmedrive.png")
 
-  override def drawGuiContainerBackgroundLayer(f: Float, i: Int, j: Int) = {
-    drawDefaultBackground();
-    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-    Minecraft.getMinecraft().renderEngine.bindTexture(guiTexture);
-    val posX = (width - xSize) / 2;
-    val posY = (height - ySize) / 2;
-    drawTexturedModalRect(posX, posY, 0, 0, xSize, ySize);
+  override def drawGuiContainerBackgroundLayer(f: Float, i: Int, j: Int): Unit = {
+    drawDefaultBackground()
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F)
+    Minecraft.getMinecraft.renderEngine.bindTexture(guiTexture)
+    val posX = (width - xSize) / 2
+    val posY = (height - ySize) / 2
+    drawTexturedModalRect(posX, posY, 0, 0, xSize, ySize)
     import scala.collection.JavaConversions._
     for (s <- this.inventorySlots.inventorySlots) {
       renderBackground(s.asInstanceOf[Slot])
@@ -36,7 +36,7 @@ class GuiHardMEDrive(inventory: InventoryPlayer, tile: TileEntityHardMeDrive)
     renderHoveredToolTip(mouseX, mouseY)
   }
 
-  override def drawGuiContainerForegroundLayer(i: Int, j: Int) =
+  override def drawGuiContainerForegroundLayer(i: Int, j: Int): Unit =
     fontRenderer.drawString(BlockEnum.BLASTRESISTANTMEDRIVE.getStatName, 5, 5, 0x000000)
 
   private def renderBackground(slot: Slot) {

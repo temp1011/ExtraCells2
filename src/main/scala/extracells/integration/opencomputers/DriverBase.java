@@ -36,7 +36,7 @@ public abstract class DriverBase<P extends IPart> implements DriverBlock, Enviro
 	@Override
 	public ManagedEnvironment createEnvironment(World world, BlockPos pos, EnumFacing side) {
 		TileEntity tile = world.getTileEntity(pos);
-		if (tile == null || (!(tile instanceof IPartHost))) {
+		if ((!(tile instanceof IPartHost))) {
 			return null;
 		}
 		return createEnvironment((IPartHost) tile);

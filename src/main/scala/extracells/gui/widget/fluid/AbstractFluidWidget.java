@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL12;
 
 public abstract class AbstractFluidWidget extends Gui {
 
-	protected int height = 0, width = 0;
+	protected int height, width;
 	protected Fluid fluid;
 	protected IFluidWidgetGui guiFluidTerminal;
 

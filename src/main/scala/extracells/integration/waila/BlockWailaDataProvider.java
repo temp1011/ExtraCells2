@@ -18,7 +18,7 @@ public class BlockWailaDataProvider implements IWailaDataProvider {
 	@Override
 	public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te,
 		NBTTagCompound tag, World world, BlockPos pos) {
-		if (te != null && te instanceof IWailaTile) {
+		if (te instanceof IWailaTile) {
 			tag.setTag("WailaTile",
 				((IWailaTile) te).getWailaTag(new NBTTagCompound()));
 		}
@@ -31,8 +31,8 @@ public class BlockWailaDataProvider implements IWailaDataProvider {
 		IWailaConfigHandler config) {
 		TileEntity tile = accessor.getTileEntity();
 		NBTTagCompound tag = accessor.getNBTData();
-		if (tile != null && tile instanceof IWailaTile && tag != null
-			&& tag.hasKey("WailaTile")) {
+		if (tile instanceof IWailaTile && tag != null
+				&& tag.hasKey("WailaTile")) {
 			IWailaTile t = (IWailaTile) tile;
 			return t.getWailaBody(currenttip, tag.getCompoundTag("WailaTile"),
 				accessor.getSide());

@@ -126,35 +126,26 @@ public class PartOreDictExporter extends PartECBase implements IGridTickable {
 			if (exclude && name.contains(filter)) {
 				return false;
 			}
-			if (!exclude && !name.contains(filter)) {
-				return false;
-			}
+			return exclude || name.contains(filter);
 		} else if (filter.startsWith("*")) {
 			filter = filter.replace("*", "");
 			if (exclude && name.endsWith(filter)) {
 				return false;
 			}
-			if (!exclude && !name.endsWith(filter)) {
-				return false;
-			}
+			return exclude || name.endsWith(filter);
 		} else if (filter.endsWith("*")) {
 			filter = filter.replace("*", "");
 			if (exclude && name.startsWith(filter)) {
 				return false;
 			}
-			if (!exclude && !name.startsWith(filter)) {
-				return false;
-			}
+			return exclude || name.startsWith(filter);
 		} else {
 			if (exclude && name.equals(filter)) {
 				return false;
 			}
-			if (!exclude && !name.equals(filter)) {
-				return false;
-			}
+			return exclude || name.equals(filter);
 		}
 
-		return true;
 	}
 
 	public boolean doWork(int rate, int TicksSinceLastCall) {

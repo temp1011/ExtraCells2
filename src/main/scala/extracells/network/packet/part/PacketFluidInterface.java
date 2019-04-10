@@ -31,7 +31,7 @@ public class PacketFluidInterface extends Packet {
 	}
 
 	@Override
-	protected void writeData(PacketBufferEC data) throws IOException {
+	protected void writeData(PacketBufferEC data) {
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setInteger("lengthTank", this.tank.length);
 		for (int i = 0; i < this.tank.length; i++) {

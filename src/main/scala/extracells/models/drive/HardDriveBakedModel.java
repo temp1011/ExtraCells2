@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import extracells.block.BlockHardMEDrive;
-import net.minecraft.block.properties.PropertyDirection;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -35,9 +35,7 @@ public class HardDriveBakedModel implements IBakedModel {
 	@Override
 	public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
 
-		List<BakedQuad> result = new ArrayList<>();
-
-		result.addAll(bakedBase.getQuads(state, side, rand));
+		List<BakedQuad> result = new ArrayList<>(bakedBase.getQuads(state, side, rand));
 
 		if (side == null && state instanceof IExtendedBlockState) {
 			IExtendedBlockState extState = (IExtendedBlockState) state;

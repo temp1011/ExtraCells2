@@ -9,10 +9,10 @@ import extracells.integration.Integration
 
 object StorageChannels {
 
-  val ITEM = AEApi.instance.storage.getStorageChannel[IAEItemStack, IItemStorageChannel](classOf[IItemStorageChannel])
+  val ITEM: IItemStorageChannel = AEApi.instance.storage.getStorageChannel[IAEItemStack, IItemStorageChannel](classOf[IItemStorageChannel])
 
-  val FLUID = AEApi.instance.storage.getStorageChannel[IAEFluidStack, IFluidStorageChannel](classOf[IFluidStorageChannel])
+  val FLUID: IFluidStorageChannel = AEApi.instance.storage.getStorageChannel[IAEFluidStack, IFluidStorageChannel](classOf[IFluidStorageChannel])
 
-  val GAS = if (Integration.Mods.MEKANISMGAS.isEnabled) AEApi.instance.storage.getStorageChannel[IAEGasStack, IGasStorageChannel](classOf[IGasStorageChannel]) else null
+  val GAS: IGasStorageChannel = if (Integration.Mods.MEKANISMGAS.isEnabled) AEApi.instance.storage.getStorageChannel[IAEGasStack, IGasStorageChannel](classOf[IGasStorageChannel]) else null
 
 }

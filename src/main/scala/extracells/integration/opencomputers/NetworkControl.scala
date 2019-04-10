@@ -31,16 +31,16 @@ trait NetworkControl[AETile >: Null <: TileEntity with IActionHost with IGridHos
   def host: EnvironmentHost
 
   val robot: Robot =
-    if (host.isInstanceOf[Robot])
-      host.asInstanceOf[Robot]
-    else
-      null
+    host match {
+      case robot1: Robot => robot1
+      case _ => null
+    }
 
   val drone: Drone =
-    if (host.isInstanceOf[Drone])
-      host.asInstanceOf[Drone]
-    else
-      null
+    host match {
+      case drone1: Drone => drone1
+      case _ => null
+    }
   var isActive = false
 
   val agent: Agent = host.asInstanceOf[Agent]
@@ -120,8 +120,7 @@ trait NetworkControl[AETile >: Null <: TileEntity with IActionHost with IGridHos
       return WirelessHandlerUpgradeAE.getEncryptionKey(stack).toLong
     }
     catch {
-      case ignored: Throwable => {
-      }
+      case _: Throwable =>
     }
     0L
   }
@@ -146,10 +145,10 @@ trait NetworkControl[AETile >: Null <: TileEntity with IActionHost with IGridHos
   def sendItems(context: Context, args: Arguments): Array[AnyRef] = {
     val selected = agent.selectedSlot
     val invRobot = agent.mainInventory
-    if (invRobot.getSizeInventory <= 0) return Array(0.underlying.asInstanceOf[AnyRef])
+    if (invRobot.getSizeInventory <= 0) return Array(0.underlying)
     val stack = invRobot.getStackInSlot(selected)
     val inv = getItemInventory
-    if (stack == null || stack.isEmpty || inv == null) return Array(0.underlying.asInstanceOf[AnyRef])
+    if (stack == null || stack.isEmpty || inv == null) return Array(0.underlying)
     val amount = Math.min(args.optInteger(0, 64), stack.getCount)
     val stack2 = stack.copy
     stack2.setCount(amount)
@@ -160,14 +159,14 @@ trait NetworkControl[AETile >: Null <: TileEntity with IActionHost with IGridHos
         invRobot.setInventorySlotContents(selected, ItemStack.EMPTY)
       else
         invRobot.setInventorySlotContents(selected, stack)
-      return Array(amount.underlying.asInstanceOf[AnyRef])
+      Array(amount.underlying)
     }else{
       stack.setCount(stack.getCount - amount + notInjectet.getStackSize.toInt)
       if (stack.getCount <= 0)
         invRobot.setInventorySlotContents(selected, ItemStack.EMPTY)
       else
         invRobot.setInventorySlotContents(selected, stack)
-      return Array((stack2.getCount - notInjectet.getStackSize).underlying.asInstanceOf[AnyRef])
+      Array((stack2.getCount - notInjectet.getStackSize).underlying)
     }
   }
 
@@ -179,15 +178,14 @@ trait NetworkControl[AETile >: Null <: TileEntity with IActionHost with IGridHos
     val amount = args.optInteger(2, 64)
     val selected = agent.selectedSlot
     val invRobot = agent.mainInventory
-    if (invRobot.getSizeInventory <= 0) return Array(0.underlying.asInstanceOf[AnyRef])
+    if (invRobot.getSizeInventory <= 0) return Array(0.underlying)
     val inv = getItemInventory
-    if (inv == null) return Array(0.underlying.asInstanceOf[AnyRef])
+    if (inv == null) return Array(0.underlying)
     val n: Node = node.network.node(address)
     if (n == null) throw new IllegalArgumentException("no such component")
-    if (!(n.isInstanceOf[Component])) throw new IllegalArgumentException("no such component")
-    val component: Component = n.asInstanceOf[Component]
+    if (!n.isInstanceOf[Component]) throw new IllegalArgumentException("no such component")
     val env: Environment = n.host
-    if (!(env.isInstanceOf[Database])) throw new IllegalArgumentException("not a database")
+    if (!env.isInstanceOf[Database]) throw new IllegalArgumentException("not a database")
     val database: Database = env.asInstanceOf[Database]
     val sel = invRobot.getStackInSlot(selected)
     val inSlot =
@@ -201,7 +199,7 @@ trait NetworkControl[AETile >: Null <: TileEntity with IActionHost with IGridHos
       else
         sel.getMaxStackSize
     val stack = database.getStackInSlot(entry - 1)
-    if(stack == null) return Array(0.underlying.asInstanceOf[AnyRef])
+    if(stack == null) return Array(0.underlying)
     stack.setCount(Math.min(amount, maxSize - inSlot))
     val stack2 = stack.copy
     stack2.setCount(1)
@@ -212,23 +210,23 @@ trait NetworkControl[AETile >: Null <: TileEntity with IActionHost with IGridHos
         sel3
       }else
         null
-    if(sel != null && !ItemStack.areItemStacksEqual(sel2, stack2) && !sel2.isEmpty) return Array(0.underlying.asInstanceOf[AnyRef])
+    if(sel != null && !ItemStack.areItemStacksEqual(sel2, stack2) && !sel2.isEmpty) return Array(0.underlying)
     val extracted = inv.extractItems(StorageChannels.ITEM.createStack(stack), Actionable.MODULATE, new MachineSource(tile))
-    if(extracted == null) return Array(0.underlying.asInstanceOf[AnyRef])
+    if(extracted == null) return Array(0.underlying)
     val ext = extracted.getStackSize.toInt
     stack.setCount(inSlot + ext)
     invRobot.setInventorySlotContents(selected, stack)
-    Array(ext.underlying.asInstanceOf[AnyRef])
+    Array(ext.underlying)
   }
 
   @Callback(doc = "function([number:amount]):number -- Transfer selecte fluid to your ae system.")
   def sendFluids(context: Context, args: Arguments): Array[AnyRef] = {
     val selected = agent.selectedTank
     val tanks = agent.tank
-    if (tanks.tankCount <= 0) return Array(0.underlying.asInstanceOf[AnyRef])
+    if (tanks.tankCount <= 0) return Array(0.underlying)
     val tank = tanks.getFluidTank(selected)
     val inv = getFluidInventory
-    if (tank == null || inv == null || tank.getFluid == null) return Array(0.underlying.asInstanceOf[AnyRef])
+    if (tank == null || inv == null || tank.getFluid == null) return Array(0.underlying)
     val amount = Math.min(args.optInteger(0, tank.getCapacity), tank.getFluidAmount)
     val fluid = tank.getFluid
     val fluid2 = fluid.copy
@@ -236,10 +234,10 @@ trait NetworkControl[AETile >: Null <: TileEntity with IActionHost with IGridHos
     val notInjectet = inv.injectItems(StorageChannels.FLUID.createStack(fluid2), Actionable.MODULATE, new MachineSource(tile))
     if (notInjectet == null){
       tank.drain(amount, true)
-      Array(amount.underlying.asInstanceOf[AnyRef])
+      Array(amount.underlying)
     }else{
       tank.drain(amount - notInjectet.getStackSize.toInt, true)
-      Array((amount - notInjectet.getStackSize).underlying.asInstanceOf[AnyRef])
+      Array((amount - notInjectet.getStackSize).underlying)
     }
   }
 
@@ -250,25 +248,24 @@ trait NetworkControl[AETile >: Null <: TileEntity with IActionHost with IGridHos
     val amount = args.optInteger(2, Fluid.BUCKET_VOLUME)
     val tanks = agent.tank
     val selected = agent.selectedTank
-    if (tanks.tankCount <= 0) return Array(0.underlying.asInstanceOf[AnyRef])
+    if (tanks.tankCount <= 0) return Array(0.underlying)
     val tank = tanks.getFluidTank(selected)
     val inv = getFluidInventory
-    if (tank == null || inv == null) return Array(0.underlying.asInstanceOf[AnyRef])
+    if (tank == null || inv == null) return Array(0.underlying)
     val n: Node = node.network.node(address)
     if (n == null) throw new IllegalArgumentException("no such component")
-    if (!(n.isInstanceOf[Component])) throw new IllegalArgumentException("no such component")
-    val component: Component = n.asInstanceOf[Component]
+    if (!n.isInstanceOf[Component]) throw new IllegalArgumentException("no such component")
     val env: Environment = n.host
-    if (!(env.isInstanceOf[Database])) throw new IllegalArgumentException("not a database")
+    if (!env.isInstanceOf[Database]) throw new IllegalArgumentException("not a database")
     val database: Database = env.asInstanceOf[Database]
     val fluid = FluidHelper.getFluidFromContainer(database.getStackInSlot(entry - 1))
     fluid.amount = amount
     val fluid2 = fluid.copy()
     fluid2.amount = tank.fill(fluid, false)
-    if (fluid2.amount == 0) return Array(0.underlying.asInstanceOf[AnyRef])
+    if (fluid2.amount == 0) return Array(0.underlying)
     val extracted = inv.extractItems(StorageChannels.FLUID.createStack(fluid2), Actionable.MODULATE, new MachineSource(tile))
-    if (extracted == 0) return Array(0.underlying.asInstanceOf[AnyRef])
-    Array(tank.fill(extracted.getFluidStack, true).underlying.asInstanceOf[AnyRef])
+    if (extracted == 0) return Array(0.underlying)
+    Array(tank.fill(extracted.getFluidStack, true).underlying)
   }
 
 
@@ -287,7 +284,7 @@ trait NetworkControl[AETile >: Null <: TileEntity with IActionHost with IGridHos
     }
   }
 
-  def getEnergy  = {
+  def getEnergy: Double = {
     val c = getComponent
     if (c == null)
       .0

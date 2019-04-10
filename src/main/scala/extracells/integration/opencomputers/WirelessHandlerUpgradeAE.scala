@@ -51,7 +51,7 @@ object WirelessHandlerUpgradeAE extends IWirelessTermHandler{
   def setEncryptionKeyRobot(itemStack: ItemStack, encKey: String, name: String){
     val robot = new RobotData(itemStack)
     val component = OCUtils.getComponent(robot, ItemEnum.OCUPGRADE.getItem)
-    if (component != null) setEncryptionKey(component, encKey, name);
+    if (component != null) setEncryptionKey(component, encKey, name)
     robot.save(itemStack)
   }
 
@@ -65,7 +65,7 @@ object WirelessHandlerUpgradeAE extends IWirelessTermHandler{
   def setEncryptionKeyDrone(itemStack: ItemStack, encKey: String, name: String){
     val robot = new RobotData(itemStack)
     val component = OCUtils.getComponent(robot, ItemEnum.OCUPGRADE.getItem)
-    if (component != null) setEncryptionKey(component, encKey, name);
+    if (component != null) setEncryptionKey(component, encKey, name)
     robot.save(itemStack)
   }
 

@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.Optional.{Interface, InterfaceList, Method}
 ))
 trait UpgradeItemAEBase extends Item with HostAware with EnvironmentProvider{
 
-  override def getRarity (stack: ItemStack) =
+  override def getRarity (stack: ItemStack): EnumRarity =
     stack.getItemDamage match {
       case 0 => EnumRarity.RARE
       case 1 => EnumRarity.UNCOMMON
@@ -39,13 +39,13 @@ trait UpgradeItemAEBase extends Item with HostAware with EnvironmentProvider{
     else super.getCreativeTabs
 
   @Method(modid = "opencomputers")
-  override def slot(stack: ItemStack) = Slot.Upgrade
+  override def slot(stack: ItemStack): String = Slot.Upgrade
 
   @Method(modid = "opencomputers")
   override def worksWith(stack: ItemStack): Boolean = stack != null && stack.getItem == this
 
   @Method(modid = "opencomputers")
-  override def dataTag(stack: ItemStack) = {
+  override def dataTag(stack: ItemStack): NBTTagCompound = {
     if (!stack.hasTagCompound) {
       stack.setTagCompound(new NBTTagCompound)
     }

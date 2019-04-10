@@ -13,7 +13,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import appeng.api.AEApi;
 import appeng.api.networking.storage.IBaseMonitor;
 import appeng.api.storage.ICellInventoryHandler;
 import appeng.api.storage.IMEMonitor;
@@ -38,7 +37,7 @@ public abstract class ContainerStorage extends Container implements
 	IMEMonitorHandlerReceiver<IAEFluidStack>, IFluidSelectorContainer,
 	IInventoryListener, IStorageContainer, ITickContainer {
 
-	protected EnumHand hand = EnumHand.MAIN_HAND;
+	protected EnumHand hand;
 	protected StorageType storageType;
 	protected IItemList<IAEFluidStack> fluidStackList;
 	protected Fluid selectedFluid;

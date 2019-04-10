@@ -24,11 +24,11 @@ import net.minecraft.world.World
 object BlockFluidFiller extends BlockEC(Material.IRON, 2.0F, 10.0F) {
 
   //Only needed because BlockEnum is in java. not in scala
-  val instance = this
+  val instance: BlockFluidFiller.type = this
 
 
   def createNewTileEntity(world: World, meta: Int): TileEntity = {
-    return new TileEntityFluidFiller
+    new TileEntityFluidFiller
   }
 
   override def onBlockActivated(world: World, pos: BlockPos, state: IBlockState, player: EntityPlayer, hand: EnumHand, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean = {
@@ -37,9 +37,11 @@ object BlockFluidFiller extends BlockEC(Material.IRON, 2.0F, 10.0F) {
     val z: Int = pos.getZ
     val current = player.getHeldItem(hand)
     if (world.isRemote) return true
-    val rand: Random = new Random
     val tile: TileEntity = world.getTileEntity(pos)
-    if (tile.isInstanceOf[IECTileEntity]) if (!PermissionUtil.hasPermission(player, SecurityPermissions.BUILD, (tile.asInstanceOf[IECTileEntity]).getGridNode(AEPartLocation.INTERNAL))) return false
+    tile match {
+      case entity: IECTileEntity => if (!PermissionUtil.hasPermission(player, SecurityPermissions.BUILD, entity.getGridNode(AEPartLocation.INTERNAL))) return false
+      case _ =>
+    }
     if (player.isSneaking) {
       val rayTraceResult = new RayTraceResult(new Vec3d(hitX, hitY, hitZ), side, pos)
       val wrenchHandler = WrenchUtil.getHandler(current, player, rayTraceResult, hand)
@@ -62,7 +64,10 @@ object BlockFluidFiller extends BlockEC(Material.IRON, 2.0F, 10.0F) {
     TileUtil.setOwner(world, pos, entity)
     val tile: TileEntity = world.getTileEntity(pos)
     if (tile != null) {
-      if (tile.isInstanceOf[IListenerTile]) (tile.asInstanceOf[IListenerTile]).registerListener()
+      tile match {
+        case tile1: IListenerTile => tile1.registerListener()
+        case _ =>
+      }
     }
   }
 
@@ -74,7 +79,10 @@ object BlockFluidFiller extends BlockEC(Material.IRON, 2.0F, 10.0F) {
     TileUtil.destroy(world, pos)
     val tile: TileEntity = world.getTileEntity(pos)
     if (tile != null) {
-      if (tile.isInstanceOf[IListenerTile]) (tile.asInstanceOf[IListenerTile]).removeListener()
+      tile match {
+        case tile1: IListenerTile => tile1.removeListener()
+        case _ =>
+      }
     }
     super.breakBlock(world, pos, state)
   }

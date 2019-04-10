@@ -8,7 +8,7 @@ import li.cil.oc.api.driver._
 
 object OpenComputers {
 
-	def init{
+	def init(){
 		add(new DriverFluidExportBus)
 		add(new DriverFluidImportBus)
 		add(new DriverOreDictExportBus)
@@ -23,11 +23,26 @@ object OpenComputers {
 	}
 
 	def add(provider: AnyRef): Unit ={
-			if (provider.isInstanceOf[EnvironmentProvider]) Driver.add(provider.asInstanceOf[EnvironmentProvider])
-			if (provider.isInstanceOf[DriverItem]) Driver.add(provider.asInstanceOf[DriverItem])
-			if (provider.isInstanceOf[DriverBlock]) Driver.add(provider.asInstanceOf[DriverBlock])
-			if (provider.isInstanceOf[Converter]) Driver.add(provider.asInstanceOf[Converter])
-			if (provider.isInstanceOf[InventoryProvider]) Driver.add(provider.asInstanceOf[InventoryProvider])
+			provider match {
+        case environmentProvider: EnvironmentProvider => Driver.add(environmentProvider)
+        case _ =>
+      }
+			provider match {
+        case item: DriverItem => Driver.add(item)
+        case _ =>
+      }
+			provider match {
+        case block: DriverBlock => Driver.add(block)
+        case _ =>
+      }
+			provider match {
+        case converter: Converter => Driver.add(converter)
+        case _ =>
+      }
+			provider match {
+        case inventoryProvider: InventoryProvider => Driver.add(inventoryProvider)
+        case _ =>
+      }
 	}
 
 }

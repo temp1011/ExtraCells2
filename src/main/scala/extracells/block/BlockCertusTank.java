@@ -35,12 +35,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import extracells.block.properties.PropertyFluid;
-import extracells.models.IStateMapperRegister;
 import extracells.registries.BlockEnum;
 import extracells.tileentity.TileEntityCertusTank;
 import extracells.util.TileUtil;
 
-public class BlockCertusTank extends BlockEC implements IStateMapperRegister {
+public class BlockCertusTank extends BlockEC {
 
 	public static final PropertyFluid FLUID = new PropertyFluid("fluid");
 	public static final PropertyBool EMPTY = PropertyBool.create("empty");
@@ -111,9 +110,7 @@ public class BlockCertusTank extends BlockEC implements IStateMapperRegister {
 		}
 
 		if (!player.isSneaking()) {
-			if (interactWithFluidHandler(hand, world, pos, side, player)) {
-				return true;
-			}
+			return interactWithFluidHandler(hand, world, pos, side, player);
 		}
 		return false;
 	}
@@ -137,7 +134,7 @@ public class BlockCertusTank extends BlockEC implements IStateMapperRegister {
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
 		IExtendedBlockState extendedBlockState = (IExtendedBlockState) super.getExtendedState(state, world, pos);
 		TileEntity tileEntity = world.getTileEntity(pos);
-		if (tileEntity != null && tileEntity instanceof TileEntityCertusTank) {
+		if (tileEntity instanceof TileEntityCertusTank) {
 			TileEntityCertusTank certusTank = (TileEntityCertusTank) tileEntity;
 			FluidStack fluidStack = certusTank.tank.getFluid();
 			if (fluidStack != null) {
@@ -148,7 +145,7 @@ public class BlockCertusTank extends BlockEC implements IStateMapperRegister {
 		//ABOVE
 		if(extendedBlockState.getValue(TANK_ABOVE)) {
 			tileEntity = world.getTileEntity(pos.up());
-			if (tileEntity != null && tileEntity instanceof TileEntityCertusTank) {
+			if (tileEntity instanceof TileEntityCertusTank) {
 				TileEntityCertusTank certusTank = (TileEntityCertusTank) tileEntity;
 				FluidStack fluidStack = certusTank.tank.getFluid();
 				if (fluidStack != null) {
@@ -160,7 +157,7 @@ public class BlockCertusTank extends BlockEC implements IStateMapperRegister {
 		//BELOW
 		if(extendedBlockState.getValue(TANK_BELOW)) {
 			tileEntity = world.getTileEntity(pos.down());
-			if (tileEntity != null && tileEntity instanceof TileEntityCertusTank) {
+			if (tileEntity instanceof TileEntityCertusTank) {
 				TileEntityCertusTank certusTank = (TileEntityCertusTank) tileEntity;
 				FluidStack fluidStack = certusTank.tank.getFluid();
 				if (fluidStack != null) {
@@ -176,7 +173,7 @@ public class BlockCertusTank extends BlockEC implements IStateMapperRegister {
 	@SideOnly(Side.CLIENT)
 	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
 		TileEntity tileEntity = world.getTileEntity(pos);
-		if (tileEntity != null && tileEntity instanceof TileEntityCertusTank) {
+		if (tileEntity instanceof TileEntityCertusTank) {
 			FluidStack fluidStack = ((TileEntityCertusTank)tileEntity).tank.getFluid();
 			state = state.withProperty(EMPTY, fluidStack == null);
 		}
@@ -197,7 +194,7 @@ public class BlockCertusTank extends BlockEC implements IStateMapperRegister {
 
 	public ItemStack getDropWithNBT(World world, BlockPos pos) {
 		TileEntity worldTE = world.getTileEntity(pos);
-		if (worldTE != null && worldTE instanceof TileEntityCertusTank) {
+		if (worldTE instanceof TileEntityCertusTank) {
 			ItemStack dropStack = new ItemStack(BlockEnum.CERTUSTANK.getBlock());
 			IFluidHandler fluidHandler = FluidUtil.getFluidHandler(dropStack);
 			FluidStack fluidStack = ((TileEntityCertusTank) worldTE).tank.getFluid();
@@ -226,11 +223,5 @@ public class BlockCertusTank extends BlockEC implements IStateMapperRegister {
 
 			world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 0);
 		}
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerStateMapper() {
-		//ModelLoader.setCustomStateMapper(this, new StateMap.Builder().build());
 	}
 }

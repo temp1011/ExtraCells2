@@ -23,7 +23,7 @@ public class UniversalTerminalRecipeWrapper implements ICraftingRecipeWrapper {
         List<List<ItemStack>> in = new ArrayList<>();
 
         if (isUniversal) {
-            List<ItemStack> univeralsTerminal = new ArrayList<ItemStack>();
+            List<ItemStack> univeralsTerminal = new ArrayList<>();
             univeralsTerminal.add(ItemEnum.UNIVERSALTERMINAL.getSizedStack(1));
             in.add(univeralsTerminal);
         }else {

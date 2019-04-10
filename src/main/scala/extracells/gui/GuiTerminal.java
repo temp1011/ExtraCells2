@@ -38,7 +38,7 @@ public class GuiTerminal extends GuiContainer implements IFluidSelectorGui {
 	private PartFluidTerminal terminal;
 	private int currentScroll = 0;
 	private GuiTextField searchbar;
-	private List<AbstractFluidWidget> fluidWidgets = new ArrayList<AbstractFluidWidget>();
+	private List<AbstractFluidWidget> fluidWidgets = new ArrayList<>();
 	private ResourceLocation guiTexture = new ResourceLocation("extracells", "textures/gui/terminalfluid.png");
 	public IAEFluidStack currentFluid;
 	private ContainerTerminal containerTerminal;
@@ -75,14 +75,14 @@ public class GuiTerminal extends GuiContainer implements IFluidSelectorGui {
 		drawWidgets(mouseX, mouseY);
 		if (this.currentFluid != null) {
 			long currentFluidAmount = this.currentFluid.getStackSize();
-			String amountToText = Long.toString(currentFluidAmount) + "mB";
+			String amountToText = currentFluidAmount + "mB";
 			if (ECConfigHandler.shortenedBuckets) {
 				if (currentFluidAmount > 1000000000L) {
-					amountToText = Long.toString(currentFluidAmount / 1000000000L) + type.getMega();
+					amountToText = currentFluidAmount / 1000000000L + type.getMega();
 				} else if (currentFluidAmount > 1000000L) {
-					amountToText = Long.toString(currentFluidAmount / 1000000L) + type.getKilo();
+					amountToText = currentFluidAmount / 1000000L + type.getKilo();
 				} else if (currentFluidAmount > 9999L) {
-					amountToText = Long.toString(currentFluidAmount / 1000L) + type.getBuckets();
+					amountToText = currentFluidAmount / 1000L + type.getBuckets();
 				}
 			}
 
@@ -166,7 +166,7 @@ public class GuiTerminal extends GuiContainer implements IFluidSelectorGui {
 		Mouse.getDWheel();
 
 		updateFluids();
-		Collections.sort(this.fluidWidgets, new FluidWidgetComparator());
+		this.fluidWidgets.sort(new FluidWidgetComparator());
 		this.searchbar = new GuiTextField(0, this.fontRenderer, this.guiLeft + 81, this.guiTop + 6, 88, 10) {
 
 			private int xPos = 0;

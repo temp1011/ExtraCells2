@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 import appeng.api.config.SecurityPermissions;
@@ -38,11 +37,10 @@ import extracells.models.drive.IECDrive;
 import extracells.util.AEUtils;
 import extracells.util.PermissionUtil;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.world.World;
 
 public class PartDrive extends PartECBase implements ICellContainer, IInventoryListener, IECDrive {
 
-	public static Queue<DriveSlotsState> tempDriveStates = new LinkedList<DriveSlotsState>();
+	public static Queue<DriveSlotsState> tempDriveStates = new LinkedList<>();
 	public static DimensionalCoord oldPos = null;
 
 	private final byte[] cellStatuses = new byte[6];
@@ -52,9 +50,9 @@ public class PartDrive extends PartECBase implements ICellContainer, IInventoryL
 			saveData();
 		}
 	};
-	private int priority = 0; // TODO
+	private HashMap<IStorageChannel,List<IMEInventoryHandler>> handlers = new HashMap<>();
+
 	private short[] blinkTimers; // TODO
-	private HashMap<IStorageChannel,List<IMEInventoryHandler>> handlers = new HashMap<IStorageChannel,List<IMEInventoryHandler>>();
 
 	@Override
 	public void addToWorld() {
@@ -145,7 +143,7 @@ public class PartDrive extends PartECBase implements ICellContainer, IInventoryL
 	public IPartModel getStaticModels() {
 		DimensionalCoord currentPos = getLocation();
 		if(currentPos == null || oldPos == null || !currentPos.isEqual(oldPos)){
-			tempDriveStates = new LinkedList<DriveSlotsState>();
+			tempDriveStates = new LinkedList<>();
 			oldPos = currentPos;
 		}
 		tempDriveStates.add(DriveSlotsState.createState(this));
@@ -160,7 +158,9 @@ public class PartDrive extends PartECBase implements ICellContainer, IInventoryL
 
 	@Override
 	public int getPriority() {
-		return this.priority;
+		// TODO
+		int priority = 0;
+		return priority;
 	}
 
 	public InventoryPlain getInventory() {
@@ -199,9 +199,9 @@ public class PartDrive extends PartECBase implements ICellContainer, IInventoryL
 	}
 
 	private HashMap<IStorageChannel,List<IMEInventoryHandler>> updateHandlers(IMEInventoryHandler[] handlerSlot) {
-		HashMap<IStorageChannel,List<IMEInventoryHandler>> handlers = new HashMap<IStorageChannel,List<IMEInventoryHandler>>();
+		HashMap<IStorageChannel,List<IMEInventoryHandler>> handlers = new HashMap<>();
 		for(IStorageChannel channel : AEApi.instance().storage().storageChannels()) {
-			List<IMEInventoryHandler> handlerChannel = new ArrayList<IMEInventoryHandler>();
+			List<IMEInventoryHandler> handlerChannel = new ArrayList<>();
 			for (int i = 0; i < this.inventory.getSizeInventory(); i++) {
 				ItemStack cell = this.inventory.getStackInSlot(i);
 				if (AEUtils.cell().isCellHandled(cell)) {
@@ -238,9 +238,9 @@ public class PartDrive extends PartECBase implements ICellContainer, IInventoryL
 	@Override
 	public List<IMEInventoryHandler> getCellArray(IStorageChannel channel) {
 		if (!isActive()) {
-			return new ArrayList();
+			return Collections.emptyList();
 		}
-		return handlers.containsKey(channel) ? handlers.get(channel) : new ArrayList();
+		return handlers.getOrDefault(channel, Collections.emptyList());
 	}
 
 	/* EVENT HANDLERS*/

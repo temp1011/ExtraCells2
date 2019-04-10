@@ -30,7 +30,7 @@ public class PartWailaDataProvider implements IWailaDataProvider {
 		if (mop != null) {
 			final IPart part = getPart(te, mop);
 
-			if (part != null && part instanceof PartECBase) {
+			if (part instanceof PartECBase) {
 				tag.setTag("partEC",
 					((PartECBase) part).getWailaTag(new NBTTagCompound()));
 			}
@@ -57,7 +57,7 @@ public class PartWailaDataProvider implements IWailaDataProvider {
 		TileEntity tile = accessor.getTileEntity();
 
 		IPart part = getPart(tile, accessor.getMOP());
-		if (part != null && part instanceof PartECBase) {
+		if (part instanceof PartECBase) {
 			NBTTagCompound tag;
 			if (accessor.getNBTData() != null
 				&& accessor.getNBTData().hasKey("partEC")) {

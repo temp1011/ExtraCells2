@@ -17,22 +17,22 @@ trait PowerItem extends Item with IAEItemPowerStorage with IEnergyContainerItem 
   override def extractEnergy(container: ItemStack, maxExtract: Int, simulate: Boolean): Int = {
     if (container == null) return 0
     if (simulate) {
-      return if (getEnergyStored(container) >= maxExtract) maxExtract else getEnergyStored(container)
+      if (getEnergyStored(container) >= maxExtract) maxExtract else getEnergyStored(container)
     }
     else {
-      return PowerUnits.AE.convertTo(PowerUnits.RF, extractAEPower(container, PowerUnits.RF.convertTo(PowerUnits.AE, maxExtract), Actionable.MODULATE)).toInt
+      PowerUnits.AE.convertTo(PowerUnits.RF, extractAEPower(container, PowerUnits.RF.convertTo(PowerUnits.AE, maxExtract), Actionable.MODULATE)).toInt
     }
   }
 
   @Optional.Method(modid = "redstoneflux")
   override def getEnergyStored(arg0: ItemStack): Int = {
     PowerUnits.RF
-    return PowerUnits.AE.convertTo(PowerUnits.RF, getAECurrentPower(arg0)).toInt
+    PowerUnits.AE.convertTo(PowerUnits.RF, getAECurrentPower(arg0)).toInt
   }
 
   @Optional.Method(modid = "redstoneflux")
   override def getMaxEnergyStored(arg0: ItemStack): Int = {
-    return PowerUnits.AE.convertTo(PowerUnits.RF, getAEMaxPower(arg0)).toInt
+    PowerUnits.AE.convertTo(PowerUnits.RF, getAEMaxPower(arg0)).toInt
   }
 
   @Optional.Method(modid = "redstoneflux")
@@ -73,16 +73,16 @@ trait PowerItem extends Item with IAEItemPowerStorage with IEnergyContainerItem 
 
   override def getAECurrentPower(itemStack: ItemStack): Double = {
     val tagCompound: NBTTagCompound = ensureTagCompound(itemStack)
-    return tagCompound.getDouble("power")
+    tagCompound.getDouble("power")
   }
 
   override def getAEMaxPower(itemStack: ItemStack): Double = {
-    return this.MAX_POWER
+    this.MAX_POWER
   }
 
   private def ensureTagCompound(itemStack: ItemStack): NBTTagCompound = {
     if (!itemStack.hasTagCompound) itemStack.setTagCompound(new NBTTagCompound)
-    return itemStack.getTagCompound
+    itemStack.getTagCompound
   }
 
   override def shouldCauseReequipAnimation(oldStack: ItemStack, newStack: ItemStack, slotChanged: Boolean): Boolean =

@@ -35,7 +35,7 @@ public class GuiBusFluidStorage extends GuiBase<ContainerBusFluidStorage> implem
 
 	private EntityPlayer player;
 	private byte filterSize;
-	private List<WidgetFluidSlot> fluidSlotList = new ArrayList<WidgetFluidSlot>();
+	private List<WidgetFluidSlot> fluidSlotList = new ArrayList<>();
 	private boolean hasNetworkTool;
 	private final PartFluidStorage part;
 

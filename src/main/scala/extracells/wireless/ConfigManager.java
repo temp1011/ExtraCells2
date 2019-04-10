@@ -15,7 +15,7 @@ import appeng.api.util.IConfigManager;
 
 public class ConfigManager implements IConfigManager {
 
-	private final Map<Settings, Enum<?>> settings = new EnumMap<Settings, Enum<?>>(Settings.class);
+	private final Map<Settings, Enum<?>> settings = new EnumMap<>(Settings.class);
 	private final NBTTagCompound tagCompound;
 
 	public ConfigManager() {

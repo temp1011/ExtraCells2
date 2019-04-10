@@ -17,7 +17,7 @@ import extracells.util.ECConfigHandler;
 
 public class WidgetFluidSelector extends AbstractFluidWidget {
 
-	private long amount = 0;
+	private long amount;
 	private int color;
 	private int borderThickness;
 
@@ -55,19 +55,19 @@ public class WidgetFluidSelector extends AbstractFluidWidget {
 			return false;
 		}
 
-		String amountToText = Long.toString(this.amount) + "mB";
+		String amountToText = this.amount + "mB";
 		if (ECConfigHandler.shortenedBuckets) {
 			if (this.amount > 1000000000L) {
-				amountToText = Long.toString(this.amount / 1000000000L)
+				amountToText = this.amount / 1000000000L
 					+ "MegaB";
 			} else if (this.amount > 1000000L) {
-				amountToText = Long.toString(this.amount / 1000000L) + "KiloB";
+				amountToText = this.amount / 1000000L + "KiloB";
 			} else if (this.amount > 9999L) {
-				amountToText = Long.toString(this.amount / 1000L) + "B";
+				amountToText = this.amount / 1000L + "B";
 			}
 		}
 
-		List<String> description = new ArrayList<String>();
+		List<String> description = new ArrayList<>();
 		description.add(this.fluid.getLocalizedName(new FluidStack(this.fluid, 0)));
 		description.add(amountToText);
 		drawHoveringText(description, mouseX - this.guiFluidTerminal.guiLeft(),

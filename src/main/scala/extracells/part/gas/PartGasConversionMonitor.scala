@@ -22,7 +22,7 @@ import org.apache.commons.lang3.tuple.MutablePair
 
 class PartGasConversionMonitor extends PartFluidConversionMonitor {
 
-  val isMekEnabled = Integration.Mods.MEKANISMGAS.isEnabled
+  val isMekEnabled: Boolean = Integration.Mods.MEKANISMGAS.isEnabled
 
   override def onActivate(player: EntityPlayer, hand: EnumHand, pos: Vec3d): Boolean = {
     if (isMekEnabled)
@@ -43,7 +43,7 @@ class PartGasConversionMonitor extends PartFluidConversionMonitor {
       this.fluid = null
       this.amount = 0L
       val host: IPartHost = getHost
-      if (host != null) host.markForUpdate
+      if (host != null) host.markForUpdate()
       return true
     }
     val rayTraceResult = new RayTraceResult(pos, getFacing, this.getLocation.getPos)
@@ -52,7 +52,7 @@ class PartGasConversionMonitor extends PartFluidConversionMonitor {
       this.locked = !this.locked
       wrenchHandler.wrenchUsed(s, player, rayTraceResult, hand)
       val host: IPartHost = getHost
-      if (host != null) host.markForUpdate
+      if (host != null) host.markForUpdate()
       if (this.locked) player.sendMessage(new TextComponentTranslation("chat.appliedenergistics2.isNowLocked"))
       else player.sendMessage(new TextComponentTranslation("chat.appliedenergistics2.isNowUnlocked"))
       return true
@@ -70,7 +70,7 @@ class PartGasConversionMonitor extends PartFluidConversionMonitor {
       }
       if (this.watcher != null) this.watcher.add(StorageChannels.GAS.createStack(this.fluid))
       val host: IPartHost = getHost
-      if (host != null) host.markForUpdate
+      if (host != null) host.markForUpdate()
       onStackChange()
       return true
     }
@@ -110,11 +110,11 @@ class PartGasConversionMonitor extends PartFluidConversionMonitor {
       else if (GasUtil.isEmpty(s2)) {
         if (this.fluid == null) return true
         var extract: IAEGasStack = null
-        if (s2.getItem.isInstanceOf[IGasItem]) {
-          extract = mon.extractItems(StorageChannels.GAS.createStack(new GasStack(GasUtil.getGas(this.fluid), (s2.getItem.asInstanceOf[IGasItem]).getMaxGas(s2))), Actionable.SIMULATE, new MachineSource(this))
+        s2.getItem match {
+          case item: IGasItem =>
+            extract = mon.extractItems(StorageChannels.GAS.createStack(new GasStack(GasUtil.getGas(this.fluid), item.getMaxGas(s2))), Actionable.SIMULATE, new MachineSource(this))
+          case _ => return true
         }
-        else
-          return true
         if (extract != null) {
           mon.extractItems(StorageChannels.GAS.createStack(new GasStack(GasUtil.getGas(this.fluid), extract.getStackSize.toInt)), Actionable.MODULATE, new MachineSource(this))
           val empty1: MutablePair[Integer, ItemStack] = GasUtil.fillStack(s2, extract.getGasStack.asInstanceOf[GasStack])
@@ -149,7 +149,7 @@ class PartGasConversionMonitor extends PartFluidConversionMonitor {
       this.fluid = null
       this.amount = 0L
       val host: IPartHost = getHost
-      if (host != null) host.markForUpdate
+      if (host != null) host.markForUpdate()
       return true
     }
     val rayTraceResult = new RayTraceResult(pos, getFacing, this.getLocation.getPos)
@@ -158,7 +158,7 @@ class PartGasConversionMonitor extends PartFluidConversionMonitor {
       this.locked = !this.locked
       wrenchHandler.wrenchUsed(s, player, rayTraceResult, hand)
       val host: IPartHost = getHost
-      if (host != null) host.markForUpdate
+      if (host != null) host.markForUpdate()
       if (this.locked) player.sendMessage(new TextComponentTranslation("chat.appliedenergistics2.isNowLocked"))
       else player.sendMessage(new TextComponentTranslation("chat.appliedenergistics2.isNowUnlocked"))
       return true
@@ -176,7 +176,7 @@ class PartGasConversionMonitor extends PartFluidConversionMonitor {
       }
       if (this.watcher != null) this.watcher.add(AEUtils.createFluidStack(this.fluid))
       val host: IPartHost = getHost
-      if (host != null) host.markForUpdate
+      if (host != null) host.markForUpdate()
       return true
     }
     false

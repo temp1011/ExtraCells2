@@ -20,7 +20,7 @@ public class PacketTerminalOpenContainer extends Packet {
 	}
 
 	@Override
-	public void writeData(PacketBufferEC data) throws IOException {
+	public void writeData(PacketBufferEC data) {
 		data.writePart(terminalFluid);
 	}
 
@@ -31,7 +31,7 @@ public class PacketTerminalOpenContainer extends Packet {
 
 	public static class Handler implements IPacketHandlerServer {
 		@Override
-		public void onPacketData(PacketBufferEC data, EntityPlayerMP player) throws IOException {
+		public void onPacketData(PacketBufferEC data, EntityPlayerMP player) {
 			PartFluidTerminal terminalFluid = data.readPart(player.world);
 			ContainerTerminal containerTerminal = GuiUtil.getContainer(player, ContainerTerminal.class);
 			if (terminalFluid == null) {

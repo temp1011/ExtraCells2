@@ -32,7 +32,7 @@ public class PacketFluidSlotSelect extends Packet {
 	}
 
 	@Override
-	protected void writeData(PacketBufferEC data) throws IOException {
+	protected void writeData(PacketBufferEC data) {
 		if (this.partOrBlock instanceof PartECBase) {
 			data.writeBoolean(true);
 			data.writePart((PartECBase) this.partOrBlock);
@@ -46,7 +46,7 @@ public class PacketFluidSlotSelect extends Packet {
 
 	public static class Handler implements IPacketHandlerServer {
 		@Override
-		public void onPacketData(PacketBufferEC data, EntityPlayerMP player) throws IOException {
+		public void onPacketData(PacketBufferEC data, EntityPlayerMP player) {
 			IFluidSlotListener listener;
 
 			if (data.readBoolean()) {

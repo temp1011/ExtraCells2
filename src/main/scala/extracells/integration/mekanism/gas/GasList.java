@@ -67,9 +67,7 @@ public class GasList implements IItemList<IAEGasStack>{
 
     @Override
     public IAEGasStack getFirstItem() {
-        for (IAEGasStack stack : this)
-            return stack;
-        return null;
+        return this.iterator().next();
     }
 
     @Override

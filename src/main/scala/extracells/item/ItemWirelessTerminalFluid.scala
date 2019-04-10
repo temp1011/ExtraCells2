@@ -10,7 +10,7 @@ import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 
 object ItemWirelessTerminalFluid extends ItemECBase with IWirelessFluidTermHandler with WirelessTermBase {
-  def THIS = this
+  def THIS: ItemWirelessTerminalFluid.type = this
 
   ECApi.instance.registerWirelessTermHandler(this)
 
@@ -26,7 +26,7 @@ object ItemWirelessTerminalFluid extends ItemECBase with IWirelessFluidTermHandl
 
 
   @SideOnly(Side.CLIENT)
-  override def registerModel(item: Item, manager: ModelManager) =
+  override def registerModel(item: Item, manager: ModelManager): Unit =
     manager.registerItemModel(item, 0, "terminals/fluid_wireless")
 
   override def isInCreativeTab2(targetTab: CreativeTabs): Boolean = isInCreativeTab(targetTab)

@@ -75,9 +75,9 @@ object GuiHandler extends IGuiHandler {
     }
   }
 
-  def getGuiId(guiId: Int) = guiId + 6
+  def getGuiId(guiId: Int): Int = guiId + 6
 
-  def getGuiId(part: PartECBase) = part.getFacing().ordinal()
+  def getGuiId(part: PartECBase): Int = part.getFacing.ordinal()
 
   def getPartContainer(side: EnumFacing, player: EntityPlayer, world: World, x: Int, y: Int, z: Int): Any =
     world.getTileEntity(new BlockPos(x, y, z)).asInstanceOf[IPartHost].getPart(side).asInstanceOf[PartECBase]
@@ -102,103 +102,111 @@ object GuiHandler extends IGuiHandler {
     val world: World = player.getEntityWorld
     val tileEntity: TileEntity = world.getTileEntity(pos)
     if (tileEntity == null) {
-      return true;
-    } else if (tileEntity.isInstanceOf[IGuiProvider]) {
-      return securityCheck(tileEntity, player)
-    } else if (tileEntity.isInstanceOf[IPartHost]) {
-      val part: IPart = tileEntity.asInstanceOf[IPartHost].getPart(side)
-      if (part != null) {
-        return securityCheck(part, player)
+      return true
+    } else tileEntity match {
+      case _: IGuiProvider =>
+        return securityCheck(tileEntity, player)
+      case _ => tileEntity match {
+        case host: IPartHost =>
+          val part: IPart = host.getPart(side)
+          if (part != null) {
+            return securityCheck(part, player)
+          }
+        case _ =>
       }
     }
     false
   }
 
   private def securityCheck(te: Any, player: EntityPlayer): Boolean = {
-    if (te.isInstanceOf[IActionHost]) {
-      val gn = te.asInstanceOf[IActionHost].getActionableNode
-      if (gn != null) {
-        val g = gn.getGrid
-        if (g != null) {
-          val requirePower = false
-          if (requirePower) {
-            val eg: IEnergyGrid = g.getCache(classOf[IEnergyGrid])
-            if (!eg.isNetworkPowered) return false
+    te match {
+      case host: IActionHost =>
+        val gn = host.getActionableNode
+        if (gn != null) {
+          val g = gn.getGrid
+          if (g != null) {
+            val requirePower = false
+            if (requirePower) {
+              val eg: IEnergyGrid = g.getCache(classOf[IEnergyGrid])
+              if (!eg.isNetworkPowered) return false
+            }
+            val sg: ISecurityGrid = g.getCache(classOf[ISecurityGrid])
+            if (sg.hasPermission(player, SecurityPermissions.BUILD)) return true
           }
-          val sg: ISecurityGrid = g.getCache(classOf[ISecurityGrid])
-          if (sg.hasPermission(player, SecurityPermissions.BUILD)) return true
         }
-      }
-      return false
+        return false
+      case _ =>
     }
     true
   }
 
   var temp: Array[Any] = Array[Any]()
-  var hand: EnumHand = null;
+  var hand: EnumHand = _
 
   override def getClientGuiElement(ID: Int, player: EntityPlayer, world: World, x: Int, y: Int, z: Int): AnyRef = {
     val gui = getGuiBlockElement(player, world, x, y, z)
     if (gui != null)
       return gui.asInstanceOf[AnyRef]
-    var side: EnumFacing = null;
+    var side: EnumFacing = null
     if (ID <= 5) side = EnumFacing.getFront(ID)
-    val pos = new BlockPos(x, y, z);
+    val pos = new BlockPos(x, y, z)
     val tileEntity = world.getTileEntity(pos)
     if (tileEntity == null)
       if(ID>=6)
         return getGui(ID - 6, player).asInstanceOf[AnyRef]
       else
         return null
-    else if (tileEntity.isInstanceOf[IGuiProvider])
-      return tileEntity.asInstanceOf[IGuiProvider].getClientGuiElement(player)
-    else if (tileEntity.isInstanceOf[IPartHost]) {
-      if (world != null && side != null) {
-        return getPartGui(side, player, world, x, y, z).asInstanceOf[AnyRef]
-      }
-      if(ID>=6)
-        return getGui(ID - 6, player).asInstanceOf[AnyRef]
+    else tileEntity match {
+      case provider: IGuiProvider => return provider.getClientGuiElement(player)
+      case _: IPartHost =>
+        if (world != null && side != null) {
+          return getPartGui(side, player, world, x, y, z).asInstanceOf[AnyRef]
+        }
+        if (ID >= 6)
+          return getGui(ID - 6, player).asInstanceOf[AnyRef]
+      case _ =>
     }
-    return null;
+    null
   }
 
   override def getServerGuiElement(ID: Int, player: EntityPlayer, world: World, x: Int, y: Int, z: Int): AnyRef = {
     val con: Any = getContainerBlockElement(player, world, x, y, z)
     if (con != null)
       return con.asInstanceOf[AnyRef]
-    var side: EnumFacing = null;
+    var side: EnumFacing = null
     if (ID <= 5) {
-      side = EnumFacing.getFront(ID);
+      side = EnumFacing.getFront(ID)
     }
-    val pos = new BlockPos(x, y, z);
+    val pos = new BlockPos(x, y, z)
     val tileEntity = world.getTileEntity(pos)
     if (tileEntity == null)
       if(ID >= 6)
         return getContainer(ID - 6, player, temp).asInstanceOf[AnyRef]
       else
         return null
-    else if (tileEntity.isInstanceOf[IGuiProvider])
-      return tileEntity.asInstanceOf[IGuiProvider].getServerGuiElement(player)
-    else if (tileEntity.isInstanceOf[IPartHost]) {
-      if (world != null && side != null) {
-        return getPartContainer(side, player, world, x, y, z).asInstanceOf[AnyRef]
-      }
-      if(ID >= 6)
-        return getContainer(ID - 6, player, temp).asInstanceOf[AnyRef]
+    else tileEntity match {
+      case provider: IGuiProvider => return provider.getServerGuiElement(player)
+      case _: IPartHost =>
+        if (world != null && side != null) {
+          return getPartContainer(side, player, world, x, y, z).asInstanceOf[AnyRef]
+        }
+        if (ID >= 6)
+          return getContainer(ID - 6, player, temp).asInstanceOf[AnyRef]
+      case _ =>
     }
-    return null;
+    null
   }
 
   def getGuiBlockElement(player: EntityPlayer, world: World, x: Int, y: Int, z: Int): Any = {
     if (world == null || player == null)
       return null
-    val pos = new BlockPos(x, y, z);
-    val block = world.getBlockState(pos).getBlock();
+    val pos = new BlockPos(x, y, z)
+    val block = world.getBlockState(pos).getBlock
     if (block == null)
       return null
     block match {
-      case guiBlock: TGuiBlock => return guiBlock.getClientGuiElement(player, world, pos)
-      case _ => return null
+      case guiBlock: TGuiBlock => guiBlock.getClientGuiElement(player, world, pos)
+      case _ => null
     }
   }
 
@@ -206,14 +214,14 @@ object GuiHandler extends IGuiHandler {
     if (world == null || player == null) {
       return null
     }
-    val pos = new BlockPos(x, y, z);
-    val block = world.getBlockState(pos).getBlock();
+    val pos = new BlockPos(x, y, z)
+    val block = world.getBlockState(pos).getBlock
     if (block == null) {
       return null
     }
     block match {
-      case guiBlock: TGuiBlock => return guiBlock.getServerGuiElement(player, world, pos)
-      case _ => return null
+      case guiBlock: TGuiBlock => guiBlock.getServerGuiElement(player, world, pos)
+      case _ => null
     }
   }
 }

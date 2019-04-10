@@ -7,7 +7,7 @@ import java.util.List;
 
 import appeng.api.storage.*;
 import appeng.api.storage.data.IAEStack;
-import extracells.util.StorageChannels;
+
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -39,12 +39,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileEntityHardMeDrive extends TileBase implements IActionHost, IECTileEntity, ICellContainer, IInventoryListener, IECDrive, IGuiProvider {
 
-	private int priority = 0;
 	private boolean isPowerd;
 
 	boolean isFirstGridNode = true;
 	byte[] cellStatuses = new byte[3];
-	List<IMEInventoryHandler> handlers = new ArrayList<IMEInventoryHandler>();
+	List<IMEInventoryHandler> handlers = new ArrayList<>();
 	private final ECGridBlockHardMEDrive gridBlock = new ECGridBlockHardMEDrive(this);
 
 	private InventoryPlain inventory = new InventoryPlain("extracells.part.drive", 3, 1, this) {
@@ -86,10 +85,10 @@ public class TileEntityHardMeDrive extends TileBase implements IActionHost, IECT
 	@Override
 	public List<IMEInventoryHandler> getCellArray(IStorageChannel channel) {
 		if (!isActive()) {
-			return new ArrayList<IMEInventoryHandler>();
+			return new ArrayList<>();
 		}
 
-		List<IMEInventoryHandler> channelHandlers = new ArrayList<IMEInventoryHandler>();
+		List<IMEInventoryHandler> channelHandlers = new ArrayList<>();
 		this.handlers = this.updateHandlers();
 
 		for (IMEInventoryHandler handler : handlers) {
@@ -101,6 +100,7 @@ public class TileEntityHardMeDrive extends TileBase implements IActionHost, IECT
 
 	@Override
 	public int getPriority() {
+		int priority = 0;
 		return priority;
 	}
 
@@ -197,7 +197,7 @@ public class TileEntityHardMeDrive extends TileBase implements IActionHost, IECT
 
 	private List<IMEInventoryHandler> updateHandlers() {
 		ICellRegistry cellRegistry = AEApi.instance().registries().cell();
-		List<IMEInventoryHandler> handlers = new ArrayList<IMEInventoryHandler>();
+		List<IMEInventoryHandler> handlers = new ArrayList<>();
 		for(IStorageChannel channel : AEApi.instance().storage().storageChannels()) {
 			for (int i = 0; i < this.inventory.getSizeInventory(); i++) {
 				ItemStack cell = this.inventory.getStackInSlot(i);

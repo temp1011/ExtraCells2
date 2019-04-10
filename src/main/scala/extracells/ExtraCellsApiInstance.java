@@ -48,10 +48,10 @@ public class ExtraCellsApiInstance implements ExtraCellsApi {
 
 	public static final ExtraCellsApi instance = new ExtraCellsApiInstance();
 
-	private final List<Class<? extends Fluid>> blacklistShowClass = new ArrayList<Class<? extends Fluid>>();
-	private final List<Fluid> blacklistShowFluid = new ArrayList<Fluid>();
-	private final List<Class<? extends Fluid>> blacklistStorageClass = new ArrayList<Class<? extends Fluid>>();
-	private final List<Fluid> blacklistStorageFluid = new ArrayList<Fluid>();
+	private final List<Class<? extends Fluid>> blacklistShowClass = new ArrayList<>();
+	private final List<Fluid> blacklistShowFluid = new ArrayList<>();
+	private final List<Class<? extends Fluid>> blacklistStorageClass = new ArrayList<>();
+	private final List<Fluid> blacklistStorageFluid = new ArrayList<>();
 
 	private final boolean isMekanismGasEnabled = Integration.Mods.MEKANISMGAS.isEnabled();
 
@@ -303,7 +303,7 @@ public class ExtraCellsApiInstance implements ExtraCellsApi {
 
 	@Override
 	public boolean isGas(Fluid fluid) {
-		return fluid != null && isMekanismGasEnabled && checkGas(fluid);
+		return isMekanismGasEnabled && checkGas(fluid);
 	}
 
 	@Override
@@ -350,7 +350,7 @@ public class ExtraCellsApiInstance implements ExtraCellsApi {
 
 	@Optional.Method(modid = "MekanismAPI|gas")
 	private Fluid createFluidFromGas(Object gas) {
-		return gas instanceof Gas ? MekanismGas.getFluidGasMap().containsKey(gas) ? MekanismGas.getFluidGasMap().get(gas) : null : null;
+		return gas instanceof Gas ? MekanismGas.getFluidGasMap().getOrDefault(gas, null) : null;
 	}
 
 	@Optional.Method(modid = "MekanismAPI|gas")

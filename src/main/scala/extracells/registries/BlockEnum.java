@@ -19,10 +19,10 @@ import extracells.item.block.ItemBlockFluidInterface;
 import extracells.util.CreativeTabEC;
 
 public enum BlockEnum {
-	CERTUSTANK("certustank", new BlockCertusTank(), (block) -> new ItemBlockCertusTank(block)),
+	CERTUSTANK("certustank", new BlockCertusTank(), ItemBlockCertusTank::new),
 	FLUIDCRAFTER("fluidcrafter", new BlockFluidCrafter()),
-	ECBASEBLOCK("ecbaseblock", BlockFluidInterface.instance(), (block) -> new ItemBlockFluidInterface(block)),
-	FILLER("fluidfiller", BlockFluidFiller.instance(), (block) -> new ItemBlockFluidFiller(block)),
+	ECBASEBLOCK("ecbaseblock", BlockFluidInterface.instance(), ItemBlockFluidInterface::new),
+	FILLER("fluidfiller", BlockFluidFiller.instance(), ItemBlockFluidFiller::new),
 	BLASTRESISTANTMEDRIVE("hardmedrive", BlockHardMEDrive.instance()),
 	VIBRANTCHAMBERFLUID("vibrantchamberfluid", new BlockVibrationChamberFluid());
 
@@ -31,12 +31,8 @@ public enum BlockEnum {
 	private ItemBlock item;
 	private Integration.Mods mod;
 
-	BlockEnum(String internalName, Block block, Integration.Mods mod) {
-		this(internalName, block, (b) -> new ItemBlock(b), mod);
-	}
-
 	BlockEnum(String internalName, Block block) {
-		this(internalName, block, (b) -> new ItemBlock(b));
+		this(internalName, block, ItemBlock::new);
 	}
 
 	BlockEnum(String internalName, Block block, Function<Block, ItemBlock> itemFactory) {

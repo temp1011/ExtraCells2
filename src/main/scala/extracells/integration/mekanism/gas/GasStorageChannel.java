@@ -1,12 +1,7 @@
 package extracells.integration.mekanism.gas;
 
 
-import appeng.api.networking.energy.IEnergySource;
-import appeng.api.networking.security.IActionSource;
-import appeng.api.storage.IMEInventory;
 import appeng.api.storage.data.IItemList;
-import appeng.util.Platform;
-import com.google.common.base.Preconditions;
 import extracells.api.gas.IAEGasStack;
 import extracells.api.gas.IGasStorageChannel;
 import extracells.util.GasUtil;
@@ -19,7 +14,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.io.IOException;
 
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -34,7 +28,7 @@ public class GasStorageChannel implements IGasStorageChannel {
 
     @Nullable
     @Override
-    public IAEGasStack readFromPacket(@Nonnull ByteBuf byteBuf) throws IOException {
+    public IAEGasStack readFromPacket(@Nonnull ByteBuf byteBuf) {
         return new AEGasStack(byteBuf);
     }
 

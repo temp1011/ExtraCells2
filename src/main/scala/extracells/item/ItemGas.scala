@@ -15,9 +15,9 @@ import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 
 object ItemGas extends Item with IItemModelRegister{
 
-  val INSTANCE = this
+  val INSTANCE: ItemGas.type = this
 
-  val isMekanismGasEnabled = Integration.Mods.MEKANISMGAS.isEnabled
+  val isMekanismGasEnabled: Boolean = Integration.Mods.MEKANISMGAS.isEnabled
 
   def setGasName(itemStack: ItemStack, fluidName: String) {
     itemStack.setTagInfo("gas", new NBTTagString(fluidName))
@@ -31,13 +31,11 @@ object ItemGas extends Item with IItemModelRegister{
 
   @SideOnly(Side.CLIENT)
   override def registerModel(item: Item, manager: ModelManager) {
-    manager.registerItemModel(item, new ItemMeshDefinition {
-      override def getModelLocation(i: ItemStack) = {
-        if (isMekanismGasEnabled)
-          new ModelResourceLocation(Constants.MOD_ID + ":gas/" + getGasName(i), "inventory")
-        else
-          new ModelResourceLocation(Constants.MOD_ID + ":fluid/water", "inventory")
-      }
+    manager.registerItemModel(item, (i: ItemStack) => {
+      if (isMekanismGasEnabled)
+        new ModelResourceLocation(Constants.MOD_ID + ":gas/" + getGasName(i), "inventory")
+      else
+        new ModelResourceLocation(Constants.MOD_ID + ":fluid/water", "inventory")
     })
   }
 

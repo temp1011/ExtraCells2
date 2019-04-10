@@ -93,7 +93,7 @@ public enum PartModels implements IPartModel {
 
 	PartModels(boolean requireConnection, Object... modelNames) {
 		this.requireConnection = requireConnection;
-		ImmutableList.Builder builder = new ImmutableList.Builder();
+		ImmutableList.Builder<ResourceLocation> builder = new ImmutableList.Builder<>();
 		for (Object o : modelNames) {
 			if (o instanceof IPartModel) {
 				builder.addAll(((IPartModel) o).getModels());

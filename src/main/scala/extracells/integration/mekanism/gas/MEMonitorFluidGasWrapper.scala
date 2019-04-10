@@ -45,17 +45,17 @@ class MEMonitorFluidGasWrapper(gasMonitor: IMEMonitor[IAEGasStack]) extends IMEM
 
   override def removeListener(l: IMEMonitorHandlerReceiver[IAEFluidStack]): Unit = {
     this.listeners -= l
-    if (listeners.size == 0)
+    if (listeners.isEmpty)
       gasMonitor.removeListener(this)
   }
 
   override def addListener(l: IMEMonitorHandlerReceiver[IAEFluidStack], verificationToken: scala.Any): Unit =
     this.listeners += (l -> verificationToken.asInstanceOf[AnyRef])
-    if (listeners.size == 0)
+    if (listeners.isEmpty)
       gasMonitor.addListener(this, null)
 
   override def onListUpdate(): Unit = {
-    for ((key, value) <- this.listeners){
+    for ((key, _) <- this.listeners){
       key.onListUpdate()
     }
   }
@@ -67,7 +67,7 @@ class MEMonitorFluidGasWrapper(gasMonitor: IMEMonitor[IAEGasStack]) extends IMEM
       changes += GasUtil.createAEFluidStack(value)
     }
 
-    for ((key, value) <- this.listeners){
+    for ((key, _) <- this.listeners){
       key.postChange(this, changes.asJava, iActionSource)
     }
   }

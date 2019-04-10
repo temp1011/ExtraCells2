@@ -14,14 +14,14 @@ import net.minecraftforge.common.ForgeHooks
 import java.util
 
 import appeng.api.config.Actionable
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.NonNullList
 
 
 object RecipeUniversalTerminal extends net.minecraftforge.registries.IForgeRegistryEntry.Impl[IRecipe] with IRecipe {
 
-  val THIS = this
+  val THIS: RecipeUniversalTerminal.type = this
 
-  val itemUniversal = ItemWirelessTerminalUniversal
+  val itemUniversal: ItemWirelessTerminalUniversal.type = ItemWirelessTerminalUniversal
 
   override def matches(inventory: InventoryCrafting, world: World): Boolean = {
     var hasWireless = false
@@ -30,7 +30,6 @@ object RecipeUniversalTerminal extends net.minecraftforge.registries.IForgeRegis
     var terminals = List[WirelessTerminalType]()
     var terminal: ItemStack = null
     val size = inventory.getSizeInventory
-    var i = 0
     for (i <- 0 until size) {
       val stack = inventory.getStackInSlot(i)
       if (stack != null) {
@@ -88,7 +87,6 @@ object RecipeUniversalTerminal extends net.minecraftforge.registries.IForgeRegis
     var terminals = List[WirelessTerminalType]()
     var terminal: ItemStack = null
     val size = inventory.getSizeInventory
-    var i = 0
     for (i <- 0 until size) {
       val stack = inventory.getStackInSlot(i)
       if (stack != null) {
@@ -112,14 +110,18 @@ object RecipeUniversalTerminal extends net.minecraftforge.registries.IForgeRegis
       val terminalType = UniversalTerminal.getTerminalType(terminal)
       val itemTerminal = terminal.getItem
       val t = new ItemStack(itemUniversal)
-      if (itemTerminal.isInstanceOf[INetworkEncodable]) {
-        val key = itemTerminal.asInstanceOf[INetworkEncodable].getEncryptionKey(terminal)
-        if (key != null)
-          itemUniversal.setEncryptionKey(t, key, null)
+      itemTerminal match {
+        case encodable: INetworkEncodable =>
+          val key = encodable.getEncryptionKey(terminal)
+          if (key != null)
+            itemUniversal.setEncryptionKey(t, key, null)
+        case _ =>
       }
-      if (itemTerminal.isInstanceOf[IAEItemPowerStorage]) {
-        val power = itemTerminal.asInstanceOf[IAEItemPowerStorage].getAECurrentPower(terminal)
-        itemUniversal.injectAEPower(t, power, Actionable.MODULATE)
+      itemTerminal match {
+        case storage: IAEItemPowerStorage =>
+          val power = storage.getAECurrentPower(terminal)
+          itemUniversal.injectAEPower(t, power, Actionable.MODULATE)
+        case _ =>
       }
       if (terminal.hasTagCompound) {
         val nbt = terminal.getTagCompound
@@ -129,7 +131,7 @@ object RecipeUniversalTerminal extends net.minecraftforge.registries.IForgeRegis
           t.getTagCompound.setTag("BoosterSlot", nbt.getTag("BoosterSlot"))
         }
         if (nbt.hasKey("MagnetSlot"))
-          t.getTagCompound.setTag("MagnetSlot", nbt.getTag("MagnetSlot"));
+          t.getTagCompound.setTag("MagnetSlot", nbt.getTag("MagnetSlot"))
       }
       itemUniversal.installModule(t, terminalType)
       t.getTagCompound.setByte("type", terminalType.ordinal.toByte)

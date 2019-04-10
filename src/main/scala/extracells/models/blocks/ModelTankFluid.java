@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -94,7 +93,7 @@ public class ModelTankFluid extends BlankModel {
 		if (!key.below) {
 			minY = 0.1F;
 		}
-		List<EnumFacing> openSides = new ArrayList<EnumFacing>();
+		List<EnumFacing> openSides = new ArrayList<>();
 		if(!key.renderTop)
 			openSides.add(EnumFacing.UP);
 		if(!key.renderBelow)

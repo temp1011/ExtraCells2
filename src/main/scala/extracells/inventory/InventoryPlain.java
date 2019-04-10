@@ -13,7 +13,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 
 import extracells.util.ItemStackUtils;
-import net.minecraftforge.items.IItemHandler;
 
 import java.util.Arrays;
 
@@ -63,9 +62,10 @@ public class InventoryPlain implements IInventory {
 
 	@Override
 	public boolean isEmpty() {
-		for (int i = 0; i < slots.length; i++){
-			if(slots[i] != null && !slots[i].isEmpty())
+		for (ItemStack slot : slots) {
+			if (slot != null && !slot.isEmpty()) {
 				return true;
+			}
 		}
 		return false;
 	}

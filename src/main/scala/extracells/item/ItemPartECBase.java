@@ -1,6 +1,5 @@
 package extracells.item;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -128,9 +127,7 @@ public class ItemPartECBase extends ItemECBase implements IPartItem, IItemGroup,
 	public void registerModel(Item item, ModelManager manager) {
 		for (PartEnum type : PartEnum.values()) {
 			Optional<ModelResourceLocation> location = type.getItemModel();
-			if (location.isPresent()) {
-				ModelLoader.setCustomModelResourceLocation(item, type.ordinal(), location.get());
-			}
+			location.ifPresent(modelResourceLocation -> ModelLoader.setCustomModelResourceLocation(item, type.ordinal(), modelResourceLocation));
 		}
 	}
 

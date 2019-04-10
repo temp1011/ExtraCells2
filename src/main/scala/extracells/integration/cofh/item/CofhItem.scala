@@ -5,7 +5,7 @@ import extracells.api.ECApi
 
 object CofhItem {
 
-  def init: Unit = {
+  def init(): Unit = {
     ECApi.instance.registerWrenchHandler(WrenchHandler)
   }
 

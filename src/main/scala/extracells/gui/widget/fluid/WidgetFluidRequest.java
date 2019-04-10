@@ -32,7 +32,7 @@ public class WidgetFluidRequest extends AbstractFluidWidget {
 			return false;
 		}
 
-		List<String> description = new ArrayList<String>();
+		List<String> description = new ArrayList<>();
 		description
 			.add(I18n
 				.translateToLocal("gui.tooltips.appliedenergistics2.Craftable"));

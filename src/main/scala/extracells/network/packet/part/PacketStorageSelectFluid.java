@@ -7,7 +7,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fluids.Fluid;
 
 import extracells.container.ContainerStorage;
-import extracells.container.fluid.ContainerFluidStorage;
 import extracells.network.packet.IPacketHandlerServer;
 import extracells.network.packet.Packet;
 import extracells.network.packet.PacketBufferEC;
@@ -22,7 +21,7 @@ public class PacketStorageSelectFluid extends Packet {
 	}
 
 	@Override
-	public void writeData(PacketBufferEC data) throws IOException {
+	public void writeData(PacketBufferEC data) {
 		data.writeFluid(fluid);
 	}
 
@@ -33,7 +32,7 @@ public class PacketStorageSelectFluid extends Packet {
 
 	public static class Handler implements IPacketHandlerServer {
 		@Override
-		public void onPacketData(PacketBufferEC data, EntityPlayerMP player) throws IOException {
+		public void onPacketData(PacketBufferEC data, EntityPlayerMP player) {
 			Fluid fluid = data.readFluid();
 			ContainerStorage containerStorage = GuiUtil.getContainer(player, ContainerStorage.class);
 			if (fluid == null || containerStorage == null) {

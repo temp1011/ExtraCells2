@@ -24,7 +24,7 @@ public class PacketTerminalSelectFluidClient extends Packet {
 	}
 
 	@Override
-	public void writeData(PacketBufferEC data) throws IOException {
+	public void writeData(PacketBufferEC data) {
 		data.writeFluid(fluid);
 	}
 
@@ -36,7 +36,7 @@ public class PacketTerminalSelectFluidClient extends Packet {
 	@SideOnly(Side.CLIENT)
 	public static class Handler implements IPacketHandlerClient {
 		@Override
-		public void onPacketData(PacketBufferEC data, EntityPlayer player) throws IOException {
+		public void onPacketData(PacketBufferEC data, EntityPlayer player) {
 			Fluid fluid = data.readFluid();
 			GuiTerminal guiTerminal = GuiUtil.getGui(GuiTerminal.class);
 			if (fluid == null || guiTerminal == null) {

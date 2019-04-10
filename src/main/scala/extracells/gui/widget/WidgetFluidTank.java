@@ -75,7 +75,7 @@ public class WidgetFluidTank extends AbstractWidget {
 
 	@Override
 	public List<String> getToolTip(int mouseX, int mouseY) {
-		List<String> description = new ArrayList<String>();
+		List<String> description = new ArrayList<>();
 		if (direction != AEPartLocation.INTERNAL) {
 			description.add(I18n.translateToLocal("extracells.tooltip.direction." + this.direction.ordinal()));
 		}

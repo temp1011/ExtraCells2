@@ -1,5 +1,6 @@
 package extracells.gridblock
 
+import java.util
 import java.util.EnumSet
 
 import appeng.api.networking._
@@ -11,18 +12,18 @@ import net.minecraft.util.EnumFacing
 
 
 class ECGridBlockVibrantChamber(host: TileEntityVibrationChamberFluid) extends IGridBlock {
-  protected var grid: IGrid = null
+  protected var grid: IGrid = _
   protected var usedChannels: Int = 0
 
-  override def getConnectableSides: EnumSet[EnumFacing] =
-    EnumSet.of(EnumFacing.DOWN, EnumFacing.UP, EnumFacing.NORTH, EnumFacing.EAST, EnumFacing.SOUTH,
+  override def getConnectableSides: util.EnumSet[EnumFacing] =
+    util.EnumSet.of(EnumFacing.DOWN, EnumFacing.UP, EnumFacing.NORTH, EnumFacing.EAST, EnumFacing.SOUTH,
       EnumFacing.WEST)
 
-  override def getFlags: EnumSet[GridFlags] = EnumSet.noneOf(classOf[GridFlags])
+  override def getFlags: util.EnumSet[GridFlags] = util.EnumSet.noneOf(classOf[GridFlags])
 
   override def getGridColor = AEColor.TRANSPARENT
 
-  override def getIdlePowerUsage = host.getPowerUsage
+  override def getIdlePowerUsage: Double = host.getPowerUsage
 
   override def getLocation: DimensionalCoord = host.getLocation
 
@@ -35,7 +36,7 @@ class ECGridBlockVibrantChamber(host: TileEntityVibrationChamberFluid) extends I
     new ItemStack(blockState.getBlock, 1, blockState.getBlock.getMetaFromState(blockState))
   }
 
-  override def gridChanged {}
+  override def gridChanged() {}
 
   override def isWorldAccessible = true
 

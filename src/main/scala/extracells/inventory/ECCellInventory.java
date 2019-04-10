@@ -8,17 +8,13 @@ import java.util.Arrays;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraftforge.items.IItemHandler;
 
 public class ECCellInventory implements IInventory {
 
-	private ItemStack storage;
-	private String tagId;
 	private NBTTagCompound tagCompound;
 	private int size;
 	private int stackLimit;
@@ -26,8 +22,6 @@ public class ECCellInventory implements IInventory {
 	private boolean dirty = false;
 
 	public ECCellInventory(ItemStack storage, String tagId, int size, int stackLimit) {
-		this.storage = storage;
-		this.tagId = tagId;
 		this.size = size;
 		this.stackLimit = stackLimit;
 
@@ -36,11 +30,11 @@ public class ECCellInventory implements IInventory {
 			slots[i] = ItemStack.EMPTY;
 		}
 
-		if (!this.storage.hasTagCompound()) {
-			this.storage.setTagCompound(new NBTTagCompound());
+		if (!storage.hasTagCompound()) {
+			storage.setTagCompound(new NBTTagCompound());
 		}
-		this.storage.getTagCompound().setTag(this.tagId, this.storage.getTagCompound().getCompoundTag(this.tagId));
-		this.tagCompound = this.storage.getTagCompound().getCompoundTag(this.tagId);
+		storage.getTagCompound().setTag(tagId, storage.getTagCompound().getCompoundTag(tagId));
+		this.tagCompound = storage.getTagCompound().getCompoundTag(tagId);
 		openInventory();
 	}
 
@@ -92,9 +86,10 @@ public class ECCellInventory implements IInventory {
 
 	@Override
 	public boolean isEmpty() {
-		for (int i = 0; i < slots.length; i++){
-			if(slots[i] != null && !slots[i].isEmpty())
+		for (ItemStack slot : slots) {
+			if (slot != null && !slot.isEmpty()) {
 				return true;
+			}
 		}
 		return false;
 	}

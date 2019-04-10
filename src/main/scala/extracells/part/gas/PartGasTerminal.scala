@@ -20,20 +20,20 @@ import org.apache.commons.lang3.tuple.MutablePair
 
 class PartGasTerminal extends PartFluidTerminal {
 
-  val mekLoaded = Mods.MEKANISMGAS.isEnabled
+  val mekLoaded: Boolean = Mods.MEKANISMGAS.isEnabled
   var doNextFill = false
 
   override protected def isItemValidForInputSlot(i: Int, itemStack: ItemStack): Boolean = {
     GasUtil.isGasContainer(itemStack)
   }
 
-  override def doWork {
+  override def doWork() {
     if (mekLoaded)
       doWorkGas
   }
 
   @Optional.Method(modid = "MekanismAPI|gas")
-  def doWorkGas {
+  def doWorkGas()() {
     val secondSlot: ItemStack = this.inventory.getStackInSlot(1)
     if (secondSlot != null && (!secondSlot.isEmpty) && secondSlot.getCount >= secondSlot.getMaxStackSize) return
     var container: ItemStack = this.inventory.getStackInSlot(0)
@@ -46,7 +46,7 @@ class PartGasTerminal extends PartFluidTerminal {
     if (gridBlock == null) return
     val monitor: IMEMonitor[IAEGasStack] = gridBlock.getGasMonitor
     if (monitor == null) return
-    val gasStack = GasUtil.getGasFromContainer(container);
+    val gasStack = GasUtil.getGasFromContainer(container)
 
     if (GasUtil.isEmpty(container) || (gasStack.amount < GasUtil.getCapacity(container) && GasUtil.getFluidStack(gasStack).getFluid == this.currentFluid && doNextFill)) {
       if (this.currentFluid == null) return
@@ -70,7 +70,7 @@ class PartGasTerminal extends PartFluidTerminal {
         doNextFill = true
       } else if (fillSecondSlot(filledContainer.getRight)) {
         monitor.extractItems(StorageChannels.GAS.createStack(new GasStack(GasUtil.getGas(this.currentFluid), filledContainer.getLeft)), Actionable.MODULATE, this.machineSource)
-        decreaseFirstSlot
+        decreaseFirstSlot()
         doNextFill = false
       }
     }
@@ -88,7 +88,7 @@ class PartGasTerminal extends PartFluidTerminal {
         this.inventory.setInventorySlotContents(0, emptyContainer)
       } else if (emptyContainer == null || emptyContainer.isEmpty || fillSecondSlot(emptyContainer)) {
         monitor.injectItems(StorageChannels.GAS.createStack(containerGas), Actionable.MODULATE, this.machineSource)
-        decreaseFirstSlot
+        decreaseFirstSlot()
       }
     }
   }

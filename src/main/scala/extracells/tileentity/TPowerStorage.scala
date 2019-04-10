@@ -9,15 +9,15 @@ trait TPowerStorage extends IAEPowerStorage {
 
   val powerInformation = new PowerInformation
 
-  override def getAECurrentPower = powerInformation.currentPower
+  override def getAECurrentPower: Double = powerInformation.currentPower
 
   override def getPowerFlow = AccessRestriction.READ_WRITE
 
-  override def getAEMaxPower = powerInformation.maxPower
+  override def getAEMaxPower: Double = powerInformation.maxPower
 
   def setMaxPower(power: Double): Unit = powerInformation.maxPower = power
 
-  override def injectAEPower(amt: Double, mode: Actionable) = {
+  override def injectAEPower(amt: Double, mode: Actionable): Double = {
     val maxStore = powerInformation.maxPower - powerInformation.currentPower
     val notStorred = {
       if (maxStore - amt >= 0)
@@ -32,19 +32,19 @@ trait TPowerStorage extends IAEPowerStorage {
 
   override def isAEPublicPowerStorage = true
 
-  override def extractAEPower(amount: Double, mode: Actionable, usePowerMultiplier: PowerMultiplier) = {
+  override def extractAEPower(amount: Double, mode: Actionable, usePowerMultiplier: PowerMultiplier): Double = {
     val toExtract = Math.min(amount, powerInformation.currentPower)
     if (mode == Actionable.MODULATE)
       powerInformation.currentPower -= toExtract
     toExtract
   }
 
-  def readPowerFromNBT(tag: NBTTagCompound) = {
+  def readPowerFromNBT(tag: NBTTagCompound): Unit = {
     if (tag.hasKey("currenPowerBattery"))
       powerInformation.currentPower = tag.getDouble("currenPowerBattery")
   }
 
-  def writePowerToNBT(tag: NBTTagCompound) = tag.setDouble("currenPowerBattery", powerInformation.currentPower)
+  def writePowerToNBT(tag: NBTTagCompound): Unit = tag.setDouble("currenPowerBattery", powerInformation.currentPower)
 
 
   class PowerInformation {

@@ -14,7 +14,6 @@ import net.minecraft.item.ItemStack;
 
 import net.minecraftforge.fluids.Fluid;
 
-import appeng.api.AEApi;
 import appeng.api.config.SecurityPermissions;
 import appeng.api.networking.storage.IBaseMonitor;
 import appeng.api.parts.IPart;
@@ -142,20 +141,18 @@ public class ContainerTerminal extends Container implements IMEMonitorHandlerRec
 		NetworkUtil.sendToServer(new PacketTerminalSelectFluidServer(fluid, terminal));
 	}
 
-	@Nullable
 	@Override
 	public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {
 		ItemStack returnStack = null;
 		boolean hasPermission = true;
 		if (slotId == 0 || slotId == 1) {
 			ItemStack stack = player.inventory.getItemStack();
-			if (stack == null || stack.isEmpty()) {
-			} else {
+			if (!stack.isEmpty()) {
 				if (type.isEmpty(stack) && PermissionUtil.hasPermission(player, SecurityPermissions.INJECT, (IPart) getTerminal())) {
 				} else if (type.isFilled(stack) && PermissionUtil.hasPermission(player, SecurityPermissions.EXTRACT, (IPart) getTerminal())) {
 				} else {
 					ItemStack slotStack = this.inventorySlots.get(slotId).getStack();
-					if (slotStack == null || slotStack.isEmpty()) {
+					if (slotStack.isEmpty()) {
 						returnStack = ItemStack.EMPTY;
 					} else {
 						returnStack = slotStack.copy();

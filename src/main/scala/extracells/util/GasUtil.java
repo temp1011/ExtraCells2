@@ -31,11 +31,6 @@ public class GasUtil {
 		return StorageChannels.FLUID().createStack(fluid);
 	}
 
-	public static IAEFluidStack createAEFluidStack(Gas gas, long amount) {
-		return createAEFluidStack(new FluidStack(MekanismGas.getFluidGasMap().get(gas), 1)).setStackSize(
-			amount);
-	}
-
 	public static IAEFluidStack createAEFluidStack(IAEGasStack gasStack){
 		if (gasStack == null || gasStack.getGas() == null)
 			return null;
@@ -50,9 +45,6 @@ public class GasUtil {
 		return StorageChannels.GAS().createStack(gasStack);
 	}
 
-	public static IAEGasStack createAEGasStack(Gas gas, long amount) {
-		return createAEGasStack(gas).setStackSize(amount);
-	}
 
 	public static IAEGasStack createAEGasStack(IAEFluidStack fluidStack) {
 		if (fluidStack == null || fluidStack.getFluid() == null || !isGas(fluidStack.getFluid()))
@@ -87,7 +79,7 @@ public class GasUtil {
 			int amountDrained = drained != null
 				&& drained.getGas() == gas.getGas() ? drained.amount
 				: 0;
-			return new MutablePair<Integer, ItemStack>(amountDrained, itemStack);
+			return new MutablePair<>(amountDrained, itemStack);
 		}
 		return null;
 	}
@@ -100,7 +92,7 @@ public class GasUtil {
 		Item item = itemStack.getItem();
 		if (item instanceof IGasItem) {
 			int filled = ((IGasItem) item).addGas(itemStack, gas);
-			return new MutablePair<Integer, ItemStack>(filled, itemStack);
+			return new MutablePair<>(filled, itemStack);
 		}
 
 		return null;
@@ -173,17 +165,6 @@ public class GasUtil {
 		return null;
 	}
 
-	public static GasStack getGasStack(IAEFluidStack fluidStack) {
-		if (fluidStack == null) {
-			return null;
-		}
-		Fluid fluid = fluidStack.getFluid();
-		if (fluid instanceof MekanismGas.GasFluid) {
-			return new GasStack(((MekanismGas.GasFluid) fluid).getGas(), (int) fluidStack.getStackSize());
-		}
-		return null;
-	}
-
 	public static FluidStack getFluidStack(GasStack gasStack) {
 		if (gasStack == null) {
 			return null;
@@ -200,7 +181,7 @@ public class GasUtil {
 	}
 
 	public static boolean isGas(Fluid fluid) {
-		return fluid != null && fluid instanceof MekanismGas.GasFluid;
+		return fluid instanceof MekanismGas.GasFluid;
 	}
 
 	public static Gas getGas(Fluid fluid) {

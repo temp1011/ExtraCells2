@@ -12,12 +12,12 @@ import scala.collection.JavaConversions._
 
 object IGW {
 
-  def initNotifier {
+  def initNotifier() {
     IGWSupportNotifier
   }
 
   @Optional.Method(modid = "igwmod")
-  def init{
+  def init(){
     for(item <- ItemEnum.values()){
       if(item != ItemEnum.CRAFTINGPATTERN && item != ItemEnum.FLUIDITEM && item != ItemEnum.GASITEM && item != ItemEnum.OCUPGRADE) {
         if(item == ItemEnum.FLUIDPATTERN){

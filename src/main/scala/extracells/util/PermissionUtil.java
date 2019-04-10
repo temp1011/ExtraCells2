@@ -42,7 +42,7 @@ public class PermissionUtil {
 	}
 
 	public static boolean hasPermission(@Nullable EntityPlayer player, @Nullable SecurityPermissions permission, @Nullable Object host) {
-		if (host != null && host instanceof IActionHost) {
+		if (host instanceof IActionHost) {
 			IActionHost actionHost = (IActionHost) host;
 			return hasPermission(player, permission, actionHost.getActionableNode());
 		}

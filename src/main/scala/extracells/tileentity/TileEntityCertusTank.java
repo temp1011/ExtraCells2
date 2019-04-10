@@ -87,7 +87,7 @@ public class TileEntityCertusTank extends TileBase {
 			TileEntity offTE = this.world.getTileEntity(pos);
 			TileEntityCertusTank mainTank = this;
 			while (true) {
-				if (offTE != null && offTE instanceof TileEntityCertusTank) {
+				if (offTE instanceof TileEntityCertusTank) {
 					Fluid offFluid = ((TileEntityCertusTank) offTE).getFluid();
 					if (offFluid != null && offFluid == fluid.getFluid()) {
 						mainTank = (TileEntityCertusTank) this.world
@@ -135,7 +135,7 @@ public class TileEntityCertusTank extends TileBase {
 			TileEntity offTE = this.world.getTileEntity(pos);
 			TileEntityCertusTank mainTank = this;
 			while (true) {
-				if (offTE != null && offTE instanceof TileEntityCertusTank) {
+				if (offTE instanceof TileEntityCertusTank) {
 					Fluid offFluid = ((TileEntityCertusTank) offTE).getFluid();
 					if (offFluid == null || offFluid == fluid.getFluid()) {
 						mainTank = (TileEntityCertusTank) this.world
@@ -197,9 +197,9 @@ public class TileEntityCertusTank extends TileBase {
 
 		int yOff = 1;
 		TileEntity offTE = this.world.getTileEntity(pos.offset(EnumFacing.DOWN, yOff));
-		TileEntityCertusTank mainTank = this;
+		TileEntityCertusTank mainTank;
 		while (true) {
-			if (offTE != null && offTE instanceof TileEntityCertusTank) {
+			if (offTE instanceof TileEntityCertusTank) {
 				if (((TileEntityCertusTank) offTE).getFluid() == null || getFluid() == null
 					|| ((TileEntityCertusTank) offTE).getFluid() == getFluid()) {
 					mainTank = (TileEntityCertusTank) this.world
@@ -217,7 +217,7 @@ public class TileEntityCertusTank extends TileBase {
 		yOff = 0;
 		offTE = this.world.getTileEntity(posBaseTank.offset(EnumFacing.UP, yOff));
 		while (true) {
-			if (offTE != null && offTE instanceof TileEntityCertusTank) {
+			if (offTE instanceof TileEntityCertusTank) {
 				mainTank = (TileEntityCertusTank) offTE;
 				if (mainTank.getFluid() == null || getFluid() == null
 					|| mainTank.getFluid() == getFluid()) {

@@ -5,7 +5,7 @@ import appeng.api.networking.security.IActionSource
 import appeng.api.storage.data.{IAEFluidStack, IItemList}
 import appeng.api.storage.IMEInventory
 import extracells.api.IExternalGasStorageHandler
-import extracells.api.gas.IAEGasStack
+import extracells.api.gas.{IAEGasStack, IGasStorageChannel}
 import extracells.util.{GasUtil, StorageChannels}
 import mekanism.api.gas.{GasStack, GasTank}
 import net.minecraft.tileentity.TileEntity
@@ -14,7 +14,7 @@ import net.minecraft.util.EnumFacing
 
 object HandlerMekanismGasTank extends IExternalGasStorageHandler {
 
-  val clazz = Class.forName("mekanism.common.tile.TileEntityGasTank")
+  val clazz: Class[_] = Class.forName("mekanism.common.tile.TileEntityGasTank")
 
   override def canHandle(tile: TileEntity, d: EnumFacing, mySrc: IActionSource): Boolean = {
     tile != null && tile.getClass == clazz
@@ -55,7 +55,7 @@ object HandlerMekanismGasTank extends IExternalGasStorageHandler {
       stackType
     }
 
-    override def getChannel = StorageChannels.GAS
+    override def getChannel: IGasStorageChannel = StorageChannels.GAS
 
     override def extractItems(stackType: IAEGasStack, actionable: Actionable, baseActionSource: IActionSource): IAEGasStack = {
       val gasStack = stackType.getGasStack.asInstanceOf[GasStack]

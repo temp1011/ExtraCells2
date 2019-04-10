@@ -1,7 +1,5 @@
 package extracells.item;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 

@@ -28,9 +28,9 @@ import net.minecraft.world.World
 object BlockFluidInterface extends BlockEC(Material.IRON, 2.0F, 10.0F) {
 
   //Only needed because BlockEnum is in java. not in scala
-  val instance = this
+  val instance: BlockFluidInterface.type = this
 
-  override def registerModel(item: Item, manager: ModelManager) = manager.registerItemModel(item, 0, "fluid_interface")
+  override def registerModel(item: Item, manager: ModelManager): Unit = manager.registerItemModel(item, 0, "fluid_interface")
 
   def createNewTileEntity(world: World, meta: Int): TileEntity = new TileEntityFluidInterface
 
@@ -40,21 +40,21 @@ object BlockFluidInterface extends BlockEC(Material.IRON, 2.0F, 10.0F) {
     val y: Int = pos.getY
     val z: Int = pos.getZ
     val tileEntity: TileEntity = world.getTileEntity(pos)
-    if (!(tileEntity.isInstanceOf[TileEntityFluidInterface])) {
+    if (!tileEntity.isInstanceOf[TileEntityFluidInterface]) {
       return
     }
-    val inventory: IInventory = (tileEntity.asInstanceOf[TileEntityFluidInterface]).inventory
+    val inventory: IInventory = tileEntity.asInstanceOf[TileEntityFluidInterface].inventory
     var i: Int = 0
     while (i < inventory.getSizeInventory) {
       {
         val item: ItemStack = inventory.getStackInSlot(i)
-        if (item != null && item.getCount() > 0) {
+        if (item != null && item.getCount > 0) {
           val rx: Float = rand.nextFloat * 0.8F + 0.1F
           val ry: Float = rand.nextFloat * 0.8F + 0.1F
           val rz: Float = rand.nextFloat * 0.8F + 0.1F
           val entityItem: EntityItem = new EntityItem(world, x + rx, y + ry, z + rz, item.copy)
           if (item.hasTagCompound) {
-            entityItem.getItem.setTagCompound(item.getTagCompound.copy.asInstanceOf[NBTTagCompound])
+            entityItem.getItem.setTagCompound(item.getTagCompound.copy)
           }
           val factor: Float = 0.05F
           entityItem.motionX = rand.nextGaussian * factor
@@ -73,9 +73,11 @@ object BlockFluidInterface extends BlockEC(Material.IRON, 2.0F, 10.0F) {
 
   override def onBlockActivated(world: World, pos: BlockPos, state: IBlockState, player: EntityPlayer, hand: EnumHand, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean = {
     if (world.isRemote) return true
-    val rand: Random = new Random()
     val tile: TileEntity = world.getTileEntity(pos)
-    if (tile.isInstanceOf[TileEntityFluidInterface]) if (!PermissionUtil.hasPermission(player, SecurityPermissions.BUILD, tile.asInstanceOf[TileEntityFluidInterface].getGridNode(null))) return false
+    tile match {
+      case interface: TileEntityFluidInterface => if (!PermissionUtil.hasPermission(player, SecurityPermissions.BUILD, interface.getGridNode(null))) return false
+      case _ =>
+    }
     val current = player.getHeldItem(hand)
     if (player.isSneaking) {
       val rayTraceResult = new RayTraceResult(new Vec3d(hitX, hitY, hitZ), side, pos)
@@ -98,15 +100,20 @@ object BlockFluidInterface extends BlockEC(Material.IRON, 2.0F, 10.0F) {
 
     val tile = world.getTileEntity(pos)
     if (tile != null) {
-      if (tile.isInstanceOf[TileEntityFluidInterface]) {
-        val node = tile.asInstanceOf[TileEntityFluidInterface].getGridNode(null)
-        if (entity != null && entity.isInstanceOf[EntityPlayer]) {
-          val player = entity.asInstanceOf[EntityPlayer]
-          node.setPlayerID(AEApi.instance.registries.players.getID(player))
-        }
-        node.updateState
+      tile match {
+        case interface: TileEntityFluidInterface =>
+          val node = interface.getGridNode(null)
+          if (entity != null && entity.isInstanceOf[EntityPlayer]) {
+            val player = entity.asInstanceOf[EntityPlayer]
+            node.setPlayerID(AEApi.instance.registries.players.getID(player))
+          }
+          node.updateState
+        case _ =>
       }
-      if (tile.isInstanceOf[IListenerTile]) tile.asInstanceOf[IListenerTile].registerListener
+      tile match {
+        case tile1: IListenerTile => tile1.registerListener
+        case _ =>
+      }
     }
   }
 
@@ -118,11 +125,13 @@ object BlockFluidInterface extends BlockEC(Material.IRON, 2.0F, 10.0F) {
     dropPatter(world, pos)
     val tile: TileEntity = world.getTileEntity(pos)
     if (tile != null) {
-      if (tile.isInstanceOf[TileEntityFluidInterface]) {
-        val node: IGridNode = (tile.asInstanceOf[TileEntityFluidInterface]).getGridNode(AEPartLocation.INTERNAL)
-        if (node != null) {
-          node.destroy
-        }
+      tile match {
+        case interface: TileEntityFluidInterface =>
+          val node: IGridNode = interface.getGridNode(AEPartLocation.INTERNAL)
+          if (node != null) {
+            node.destroy
+          }
+        case _ =>
       }
     }
     super.breakBlock(world, pos, state)

@@ -61,7 +61,7 @@ public class TileEntityFluidFiller extends TileBase implements IActionHost, ICra
 
 	private ECFluidGridBlock gridBlock;
 	private IGridNode node = null;
-	List<Fluid> fluids = new ArrayList<Fluid>();
+	List<Fluid> fluids = new ArrayList<>();
 	public ItemStack containerItem = new ItemStack(Items.BUCKET);
 	ItemStack returnStack = null;
 	int ticksToFinish = 0;
@@ -172,7 +172,7 @@ public class TileEntityFluidFiller extends TileBase implements IActionHost, ICra
 
 	@Override
 	public void postChange(IBaseMonitor<IAEFluidStack> monitor, Iterable<IAEFluidStack> change, IActionSource actionSource) {
-		List<Fluid> oldFluids = new ArrayList<Fluid>(this.fluids);
+		List<Fluid> oldFluids = new ArrayList<>(this.fluids);
 		boolean mustUpdate = false;
 		this.fluids.clear();
 		for (IAEFluidStack fluid : ((IMEMonitor<IAEFluidStack>) monitor)
@@ -211,7 +211,7 @@ public class TileEntityFluidFiller extends TileBase implements IActionHost, ICra
 		}
 	}
 
-	HashMap<ICraftingPatternDetails, FluidStack> patternFluids = new HashMap<ICraftingPatternDetails, FluidStack>();
+	HashMap<ICraftingPatternDetails, FluidStack> patternFluids = new HashMap<>();
 
 	@Override
 	public void provideCrafting(ICraftingProviderHelper craftingTracker) {

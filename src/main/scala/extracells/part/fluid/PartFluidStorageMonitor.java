@@ -427,11 +427,11 @@ public class PartFluidStorageMonitor extends PartECBase implements IStackWatcher
 			qty = 999999999999L;
 		}
 
-		String msg = Long.toString(qty) + "mB";
+		String msg = qty + "mB";
 		if (qty > 1000000000) {
-			msg = Long.toString(qty / 1000000000) + "MB";
+			msg = qty / 1000000000 + "MB";
 		} else if (qty > 1000000) {
-			msg = Long.toString(qty / 1000000) + "KB";
+			msg = qty / 1000000 + "KB";
 		} else if (qty > 9999) {
 			msg = Long.toString(qty / 1000) + 'B';
 		}

@@ -22,7 +22,7 @@ public class PacketStorageUpdateState extends Packet {
 	}
 
 	@Override
-	public void writeData(PacketBufferEC data) throws IOException {
+	public void writeData(PacketBufferEC data) {
 		data.writeBoolean(hasTermHandler);
 	}
 
@@ -34,7 +34,7 @@ public class PacketStorageUpdateState extends Packet {
 	@SideOnly(Side.CLIENT)
 	public static class Handler implements IPacketHandlerClient {
 		@Override
-		public void onPacketData(PacketBufferEC data, EntityPlayer player) throws IOException {
+		public void onPacketData(PacketBufferEC data, EntityPlayer player) {
 			boolean hasTermHandler = data.readBoolean();
 			ContainerStorage containerStorage = GuiUtil.getContainer(player, ContainerStorage.class);
 			if (containerStorage == null) {

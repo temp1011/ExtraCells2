@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import extracells.util.ItemStackUtils;
-import extracells.util.ItemUtils;
 import extracells.util.MachineSource;
 import extracells.util.StorageChannels;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -105,9 +104,10 @@ public class TileEntityFluidCrafter extends TileBase implements IActionHost, ICr
 
 		@Override
 		public boolean isEmpty() {
-			for (int i = 0; i < inv.length; i++){
-				if(inv[i] != null && !inv[i].isEmpty())
+			for (ItemStack itemStack : inv) {
+				if (itemStack != null && !itemStack.isEmpty()) {
 					return true;
+				}
 			}
 			return false;
 		}
@@ -220,9 +220,9 @@ public class TileEntityFluidCrafter extends TileBase implements IActionHost, ICr
 
 	private ECFluidGridBlock gridBlock;
 	private IGridNode node = null;
-	private List<ICraftingPatternDetails> patternHandlers = new ArrayList<ICraftingPatternDetails>();
-	private List<IAEItemStack> requestedItems = new ArrayList<IAEItemStack>();
-	private List<IAEItemStack> removeList = new ArrayList<IAEItemStack>();
+	private List<ICraftingPatternDetails> patternHandlers = new ArrayList<>();
+	private List<IAEItemStack> requestedItems = new ArrayList<>();
+	private List<IAEItemStack> removeList = new ArrayList<>();
 	private ICraftingPatternDetails[] patternHandlerSlot = new ICraftingPatternDetails[9];
 	private ItemStack[] oldStack = new ItemStack[9];
 	private boolean isBusy = false;
@@ -305,21 +305,20 @@ public class TileEntityFluidCrafter extends TileBase implements IActionHost, ICr
 			if (!this.requestedItems.contains(what)) {
 				this.requestedItems.add(what);
 			}
-		} else if (this.requestedItems.contains(what)) {
+		} else
 			this.requestedItems.remove(what);
-		}
 
 	}
 
 	@Override
 	public void provideCrafting(ICraftingProviderHelper craftingTracker) {
-		this.patternHandlers = new ArrayList<ICraftingPatternDetails>();
+		this.patternHandlers = new ArrayList<>();
 		ICraftingPatternDetails[] oldHandler = patternHandlerSlot;
 		patternHandlerSlot = new ICraftingPatternDetails[9];
 		for (int i = 0; this.inventory.inv.length > i; i++) {
 			ItemStack currentPatternStack = this.inventory.inv[i];
 			ItemStack oldItem = this.oldStack[i];
-			if (currentPatternStack != null && oldItem != null && ItemStack.areItemStacksEqual(currentPatternStack, oldItem)) {
+			if (currentPatternStack != null && ItemStack.areItemStacksEqual(currentPatternStack, oldItem)) {
 				ICraftingPatternDetails pa = oldHandler[i];
 				if (pa != null) {
 					patternHandlerSlot[i] = pa;
@@ -363,7 +362,7 @@ public class TileEntityFluidCrafter extends TileBase implements IActionHost, ICr
 		}
 		if (patternDetails instanceof CraftingPattern) {
 			CraftingPattern patter = (CraftingPattern) patternDetails;
-			HashMap<Fluid, Long> fluids = new HashMap<Fluid, Long>();
+			HashMap<Fluid, Long> fluids = new HashMap<>();
 			for (IAEFluidStack stack : patter.getCondensedFluidInputs()) {
 				if (fluids.containsKey(stack.getFluid())) {
 					Long amount = fluids.get(stack.getFluid()) + stack.getStackSize();
@@ -383,14 +382,14 @@ public class TileEntityFluidCrafter extends TileBase implements IActionHost, ICr
 			}
 			for (Fluid fluid : fluids.keySet()) {
 				Long amount = fluids.get(fluid);
-				IAEFluidStack extractFluid = storage.getInventory(StorageChannels.FLUID()).extractItems(StorageChannels.FLUID().createStack(new FluidStack(fluid, (int) (amount + 0))), Actionable.SIMULATE, new MachineSource(this));
+				IAEFluidStack extractFluid = storage.getInventory(StorageChannels.FLUID()).extractItems(StorageChannels.FLUID().createStack(new FluidStack(fluid, (int) (amount))), Actionable.SIMULATE, new MachineSource(this));
 				if (extractFluid == null || extractFluid.getStackSize() != amount) {
 					return false;
 				}
 			}
 			for (Fluid fluid : fluids.keySet()) {
 				Long amount = fluids.get(fluid);
-				IAEFluidStack extractFluid = storage.getInventory(StorageChannels.FLUID()).extractItems(StorageChannels.FLUID().createStack(new FluidStack(fluid, (int) (amount + 0))), Actionable.MODULATE, new MachineSource(this));
+				IAEFluidStack extractFluid = storage.getInventory(StorageChannels.FLUID()).extractItems(StorageChannels.FLUID().createStack(new FluidStack(fluid, (int) (amount))), Actionable.MODULATE, new MachineSource(this));
 			}
 			this.finishCraftingTime = System.currentTimeMillis() + 1000;
 
@@ -484,7 +483,7 @@ public class TileEntityFluidCrafter extends TileBase implements IActionHost, ICr
 					for (ICraftingPatternDetails details : this.patternHandlers) {
 						if (details.getCondensedOutputs()[0].equals(s)) {
 							CraftingPattern patter = (CraftingPattern) details;
-							HashMap<Fluid, Long> fluids = new HashMap<Fluid, Long>();
+							HashMap<Fluid, Long> fluids = new HashMap<>();
 							for (IAEFluidStack stack : patter.getCondensedFluidInputs()) {
 								if (fluids.containsKey(stack.getFluid())) {
 									Long amount = fluids.get(stack.getFluid()) + stack.getStackSize();
@@ -501,7 +500,7 @@ public class TileEntityFluidCrafter extends TileBase implements IActionHost, ICr
 							boolean doBreak = false;
 							for (Fluid fluid : fluids.keySet()) {
 								Long amount = fluids.get(fluid);
-								IAEFluidStack extractFluid = storage.getInventory(StorageChannels.FLUID()).extractItems(StorageChannels.FLUID().createStack(new FluidStack(fluid, (int) (amount + 0))), Actionable.SIMULATE, new MachineSource(this));
+								IAEFluidStack extractFluid = storage.getInventory(StorageChannels.FLUID()).extractItems(StorageChannels.FLUID().createStack(new FluidStack(fluid, (int) (amount))), Actionable.SIMULATE, new MachineSource(this));
 								if (extractFluid == null || extractFluid.getStackSize() != amount) {
 									doBreak = true;
 									break;
@@ -512,7 +511,7 @@ public class TileEntityFluidCrafter extends TileBase implements IActionHost, ICr
 							}
 							for (Fluid fluid : fluids.keySet()) {
 								Long amount = fluids.get(fluid);
-								IAEFluidStack extractFluid = storage.getInventory(StorageChannels.FLUID()).extractItems(StorageChannels.FLUID().createStack(new FluidStack(fluid, (int) (amount + 0))), Actionable.MODULATE, new MachineSource(this));
+								IAEFluidStack extractFluid = storage.getInventory(StorageChannels.FLUID()).extractItems(StorageChannels.FLUID().createStack(new FluidStack(fluid, (int) (amount))), Actionable.MODULATE, new MachineSource(this));
 							}
 							this.finishCraftingTime = System.currentTimeMillis() + 1000;
 
@@ -528,8 +527,8 @@ public class TileEntityFluidCrafter extends TileBase implements IActionHost, ICr
 	}
 
 	private void updateWatcher() {
-		this.requestedItems = new ArrayList<IAEItemStack>();
-		IGrid grid = null;
+		this.requestedItems = new ArrayList<>();
+		IGrid grid;
 		IGridNode node = getGridNode();
 		ICraftingGrid crafting = null;
 		if (node != null) {

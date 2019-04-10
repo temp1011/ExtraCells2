@@ -1,10 +1,6 @@
 package extracells.item.storage;
 
-import java.util.List;
-
-import appeng.api.storage.data.IAEStack;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -33,7 +29,6 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 import cofh.redstoneflux.api.IEnergyContainerItem;
 import extracells.inventory.ECCellInventory;
 import extracells.item.EnumBlockContainerMode;
-import extracells.item.ItemECBase;
 import extracells.models.ModelManager;
 import extracells.registries.ItemEnum;
 import extracells.util.ECConfigHandler;
@@ -42,15 +37,11 @@ import extracells.util.StorageChannels;
 import appeng.api.AEApi;
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
-import appeng.api.config.FuzzyMode;
 import appeng.api.config.PowerUnits;
 import appeng.api.implementations.items.IAEItemPowerStorage;
-import appeng.api.implementations.items.IStorageCell;
 import appeng.api.storage.ICellInventory;
 import appeng.api.storage.ICellInventoryHandler;
-import appeng.api.storage.ICellRegistry;
 import appeng.api.storage.IMEInventoryHandler;
-import appeng.api.storage.IStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 

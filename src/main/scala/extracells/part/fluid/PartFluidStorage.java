@@ -53,7 +53,7 @@ import extracells.util.PermissionUtil;
 
 public class PartFluidStorage extends PartECBase implements ICellContainer, IInventoryListener, IFluidSlotListener, IUpgradeable {
 
-	private final HashMap<FluidStack, Integer> fluidList = new HashMap<FluidStack, Integer>();
+	private final HashMap<FluidStack, Integer> fluidList = new HashMap<>();
 	private final Fluid[] filterFluids = new Fluid[54];
 	private final InventoryPlain upgradeInventory = new InventoryPlain("", 1, 1, this) {
 
@@ -109,7 +109,7 @@ public class PartFluidStorage extends PartECBase implements ICellContainer, IInv
 
 	@Override
 	public List<IMEInventoryHandler> getCellArray(IStorageChannel channel) {
-		List<IMEInventoryHandler> list = new ArrayList<IMEInventoryHandler>();
+		List<IMEInventoryHandler> list = new ArrayList<>();
 		if (channel == this.channel) {
 			list.add(this.handler);
 		}
@@ -291,7 +291,7 @@ public class PartFluidStorage extends PartECBase implements ICellContainer, IInv
 	}
 
 	protected boolean wasChanged() {
-		HashMap<FluidStack, Integer> fluids = new HashMap<FluidStack, Integer>();
+		HashMap<FluidStack, Integer> fluids = new HashMap<>();
 		for (IAEFluidStack stack : ((IHandlerPartBase<IAEFluidStack>)handler).getAvailableItems(StorageChannels.FLUID().createList())) {
 			FluidStack s = stack.getFluidStack();
 			fluids.put(s, s.amount);

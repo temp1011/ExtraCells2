@@ -7,7 +7,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 
 import appeng.api.storage.IMEInventory;
-import appeng.api.storage.data.IAEFluidStack;
 
 
 /**

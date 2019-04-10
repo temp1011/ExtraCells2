@@ -9,7 +9,7 @@ import net.minecraft.inventory.Slot;
 import extracells.container.slot.SlotDisabled;
 
 public abstract class ContainerBase extends Container {
-	private final HashSet<Integer> locked = new HashSet<Integer>();
+	private final HashSet<Integer> locked = new HashSet<>();
 
 	public ContainerBase() {
 	}

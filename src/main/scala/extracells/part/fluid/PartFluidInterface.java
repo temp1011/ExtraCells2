@@ -83,14 +83,11 @@ import net.minecraftforge.items.IItemHandler;
 
 public class PartFluidInterface extends PartECBase implements IFluidHandler, IFluidInterface, IFluidSlotListener, IStorageMonitorable, IGridTickable, ICraftingProvider {
 
-	private final List<IContainerListener> listeners = new ArrayList<IContainerListener>();
-	private final List<ICraftingPatternDetails> patternHandlers = new ArrayList<ICraftingPatternDetails>();
-	private final HashMap<ICraftingPatternDetails, IFluidCraftingPatternDetails> patternConvert = new HashMap<ICraftingPatternDetails, IFluidCraftingPatternDetails>();
-	//private List<IAEItemStack> requestedItems = new ArrayList<IAEItemStack>();
-	//private List<IAEItemStack> removeList = new ArrayList<IAEItemStack>();
-	private final List<IAEStack> export = new ArrayList<IAEStack>();
-	private final List<IAEStack> removeFromExport = new ArrayList<IAEStack>();
-	private final List<IAEStack> addToExport = new ArrayList<IAEStack>();
+	private final List<IContainerListener> listeners = new ArrayList<>();
+	private final HashMap<ICraftingPatternDetails, IFluidCraftingPatternDetails> patternConvert = new HashMap<>();
+	private final List<IAEStack> export = new ArrayList<>();
+	private final List<IAEStack> removeFromExport = new ArrayList<>();
+	private final List<IAEStack> addToExport = new ArrayList<>();
 	private final Item encodedPattern = AEApi.instance().definitions().items().encodedPattern().maybeItem().orElse(null);
 	private final FluidTank tank = new FluidTank(10000){
 		@Override
@@ -422,7 +419,6 @@ public class PartFluidInterface extends PartECBase implements IFluidHandler, IFl
 
 				if (currentPattern != null && currentPattern.getPatternForItem(currentPatternStack, getGridNode().getWorld()) != null) {
 					IFluidCraftingPatternDetails pattern = new CraftingPattern2(currentPattern.getPatternForItem(currentPatternStack, getGridNode().getWorld()));
-					this.patternHandlers.add(pattern);
 					ItemStack is = makeCraftingPatternItem(pattern);
 					if (ItemStackUtils.isEmpty(is)) {
 						continue;
@@ -442,9 +438,7 @@ public class PartFluidInterface extends PartECBase implements IFluidHandler, IFl
 			this.export.remove(s);
 		}
 		this.removeFromExport.clear();
-		for (IAEStack s : this.addToExport) {
-			this.export.add(s);
-		}
+		this.export.addAll(this.addToExport);
 		this.addToExport.clear();
 		if (getGridNode().getWorld() == null || this.export.isEmpty()) {
 			return;
@@ -549,7 +543,6 @@ public class PartFluidInterface extends PartECBase implements IFluidHandler, IFl
 					handler.fill(fl, true);
 					this.removeFromExport.add(exportStack);
 					this.addToExport.add(f);
-					return;
 				}
 			}
 		}
@@ -563,7 +556,7 @@ public class PartFluidInterface extends PartECBase implements IFluidHandler, IFl
 		ICraftingPatternDetails patternDetails = this.patternConvert.get(patDetails);
 		if (patternDetails instanceof CraftingPattern) {
 			CraftingPattern patter = (CraftingPattern) patternDetails;
-			HashMap<Fluid, Long> fluids = new HashMap<Fluid, Long>();
+			HashMap<Fluid, Long> fluids = new HashMap<>();
 			for (IAEFluidStack stack : patter.getCondensedFluidInputs()) {
 				if (fluids.containsKey(stack.getFluid())) {
 					Long amount = fluids.get(stack.getFluid()) + stack.getStackSize();
@@ -584,7 +577,7 @@ public class PartFluidInterface extends PartECBase implements IFluidHandler, IFl
 			for (Fluid fluid : fluids.keySet()) {
 				Long amount = fluids.get(fluid);
 				IAEFluidStack extractFluid = storage.getInventory(StorageChannels.FLUID())
-					.extractItems(AEUtils.createFluidStack(fluid, (int) (amount + 0)), Actionable.SIMULATE, new MachineSource(this));
+					.extractItems(AEUtils.createFluidStack(fluid, (int) amount.longValue()), Actionable.SIMULATE, new MachineSource(this));	//TODO - overflow
 				if (extractFluid == null
 					|| extractFluid.getStackSize() != amount) {
 					return false;
@@ -592,7 +585,7 @@ public class PartFluidInterface extends PartECBase implements IFluidHandler, IFl
 			}
 			for (Fluid fluid : fluids.keySet()) {
 				Long amount = fluids.get(fluid);
-				IAEFluidStack extractFluid = storage.getInventory(StorageChannels.FLUID()).extractItems(AEUtils.createFluidStack(fluid, (int) (amount + 0)), Actionable.MODULATE, new MachineSource(this));
+				IAEFluidStack extractFluid = storage.getInventory(StorageChannels.FLUID()).extractItems(AEUtils.createFluidStack(fluid, (int) amount.longValue()), Actionable.MODULATE, new MachineSource(this));
 				this.export.add(extractFluid);
 			}
 			for (IAEItemStack fluidStack : patter.getCondensedInputs()) {

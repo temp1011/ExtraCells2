@@ -80,7 +80,7 @@ class PartGasExport extends PartFluidExport with ITubeConnection {
         }
       }
     }
-    return false
+    false
   }
 
   @Method(modid = "MekanismAPI|gas")
