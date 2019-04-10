@@ -32,29 +32,6 @@ import net.minecraftforge.common.property.{ExtendedBlockState, IExtendedBlockSta
 
 object BlockHardMEDrive extends BlockEC(net.minecraft.block.material.Material.ROCK, 2.0F, 1000000.0F)  {
 
-  /*
-  override def getServerGuiElement(player: EntityPlayer, world: World, pos: BlockPos): Any = {
-    val tile = world.getTileEntity(pos)
-    if (tile == null || player == null) return null
-    tile match {
-      case tileMe: TileEntityHardMeDrive => {
-        return new ContainerHardMEDrive(player.inventory, tileMe)
-      }
-      case _ => return null
-    }
-  }
-
-  @SideOnly(Side.CLIENT)
-  override def getClientGuiElement(player: EntityPlayer, world: World, pos: BlockPos): Any = {
-    val tile = world.getTileEntity(pos)
-    if (tile == null || player == null) return null
-    tile match {
-      case tileMe: TileEntityHardMeDrive => {
-        return new GuiHardMEDrive(player.inventory, tileMe)
-      }
-      case _ => return null
-    }
-  }*/
   var _FACING: PropertyDirection = _
 
   def FACING: PropertyDirection = {
@@ -134,50 +111,6 @@ object BlockHardMEDrive extends BlockEC(net.minecraft.block.material.Material.RO
 
     world.setBlockState(pos, state.withProperty(FACING, entity.getHorizontalFacing.getOpposite), 2)
 
-    //TODO: Add rotation
-    /*if (!entity.isSneaking())
-    {
-      if (l == 0)
-      {
-        world.setBlockMetadataWithNotify(x, y, z, 2, 2);
-      }
-
-      if (l == 1)
-      {
-        world.setBlockMetadataWithNotify(x, y, z, 5, 2);
-      }
-
-      if (l == 2)
-      {
-        world.setBlockMetadataWithNotify(x, y, z, 3, 2);
-      }
-
-      if (l == 3)
-      {
-        world.setBlockMetadataWithNotify(x, y, z, 4, 2);
-      }
-    } else
-    {
-      if (l == 0)
-      {
-        world.setBlockMetadataWithNotify(x, y, z, ForgeDirection.getOrientation(2).getOpposite().ordinal(), 2);
-      }
-
-      if (l == 1)
-      {
-        world.setBlockMetadataWithNotify(x, y, z, ForgeDirection.getOrientation(5).getOpposite().ordinal(), 2);
-      }
-
-      if (l == 2)
-      {
-        world.setBlockMetadataWithNotify(x, y, z, ForgeDirection.getOrientation(3).getOpposite().ordinal(), 2);
-      }
-
-      if (l == 3)
-      {
-        world.setBlockMetadataWithNotify(x, y, z, ForgeDirection.getOrientation(4).getOpposite().ordinal(), 2);
-      }
-    }*/
     if (world.isRemote) return
     val tile: TileEntity = world.getTileEntity(pos)
     if (tile != null) {
